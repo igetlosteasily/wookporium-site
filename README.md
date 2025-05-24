@@ -5,15 +5,21 @@
 - [x] DNS setup complete
 - [x] Email routing configured (orders@, dev@)
 - [x] Project structure created
-- [ ] Sanity.io account & setup
-- [ ] Next.js project initialization
-- [ ] Version control (Git) setup
+- [x] Sanity.io account & setup
+- [x] Next.js project initialization
+- [x] Version control (Git) setup
+- [x] GitHub repository created & code pushed
 - [ ] Cloudflare Pages connection
 - [ ] Snipcart account setup
 
 ## Phase 1: Initial Setup & Account Configuration
-- [ ] Sanity.io Setup
-- [ ] Next.js Project Setup  
-- [ ] Version Control (Git)
-- [ ] Cloudflare Pages Setup
+- [x] Sanity.io Setup
+- [x] Next.js Project Setup  
+- [x] Version Control (Git)
+- [ ] Cloudflare Pages Setup ← Working on this now!
 - [ ] Snipcart Account Setup
+
+## Phase 2: Content Modeling in Sanity.io
+- [ ] Product schema design
+- [ ] Category schema
+- [ ] Sample product creation
