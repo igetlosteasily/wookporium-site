@@ -2,6 +2,7 @@ import { getProducts } from '@/lib/sanity'
 import CartButton from '@/components/CartButton'
 import CartTrigger from '@/components/CartTrigger'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface Product {
   _id: string
@@ -42,11 +43,13 @@ export default async function ProductsPage() {
             >
               {/* Product Image */}
               {product.mainImageUrl && (
-                <Link href={`/products/${product.slug.current}/`} className="aspect-square overflow-hidden block">
-                  <img
+                <Link href={`/products/${product.slug.current}/`} className="aspect-square overflow-hidden block relative">
+                  <Image
                     src={product.mainImageUrl}
                     alt={product.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    fill
+                    className="object-cover hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </Link>
               )}

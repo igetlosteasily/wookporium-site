@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface Product {
   mainImageUrl: string;
@@ -25,11 +26,13 @@ export default function ProductImages({ product }: { product: Product }) {
   return (
     <div className="space-y-4">
       {/* Main Image Display */}
-      <div className="aspect-square overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
-        <img
+      <div className="aspect-square overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 relative">
+        <Image
           src={selectedImage}
           alt={product.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
 
@@ -44,12 +47,14 @@ export default function ProductImages({ product }: { product: Product }) {
                 selectedImage === imageUrl 
                   ? 'ring-2 ring-pink-400 bg-pink-500/20' 
                   : 'bg-white/10 hover:bg-white/20'
-              } backdrop-blur-md border border-white/20`}
+              } backdrop-blur-md border border-white/20 relative`}
             >
-              <img
+              <Image
                 src={imageUrl}
                 alt={`${product.title} - Image ${index + 1}`}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                fill
+                className="object-cover hover:scale-110 transition-transform duration-300"
+                sizes="(max-width: 768px) 33vw, (max-width: 1200px) 25vw, 16vw"
               />
             </div>
           ))}

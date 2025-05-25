@@ -50,7 +50,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             Product Not Found
           </h1>
           <p className="text-xl text-purple-200 mb-6">
-            Sorry, we couldn't find that product.
+            Sorry, we couldn&apos;t find that product.
           </p>
           <Link 
             href="/products/" 
@@ -207,7 +207,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     ✨ One of a Kind
                   </h3>
                   <p className="text-yellow-200 text-sm">
-                    This is a unique, handcrafted piece. Once it's gone, it's gone forever!
+                    This is a unique, handcrafted piece. Once it&apos;s gone, it&apos;s gone forever!
                   </p>
                 </div>
               )}
