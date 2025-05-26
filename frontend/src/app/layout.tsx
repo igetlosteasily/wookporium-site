@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import SnipcartProvider from "../components/SnipcartProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,26 +46,16 @@ export default function RootLayout({
       >
         {children}
         
-        {/* Snipcart Integration */}
-       <div
-          hidden
-          id="snipcart"
-          data-api-key={process.env.NEXT_PUBLIC_SNIPCART_API_KEY || ""}
-          data-config-modal-style="side"
-          data-config-add-product-behavior="none"
-        ></div>
+        {/* Snipcart Integration - Now handled by SnipcartProvider */}
+        <SnipcartProvider />
         
-        {/* Snipcart JavaScript */}
-        <script 
-          async 
-          src="https://cdn.snipcart.com/themes/v3.4.1/default/snipcart.js"
-        ></script>
-        
-        {/* Service Worker Registration */}
-        <script
+        {/* Service Worker Registration - Client-side only */}
+        <Script 
+          id="service-worker-registration"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              if ('serviceWorker' in navigator) {
+              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
@@ -76,8 +68,8 @@ export default function RootLayout({
               }
             `,
           }}
-            />
-          </body>
-        </html>
-      );
-    }
+        />
+      </body>
+    </html>
+  );
+}

@@ -7,7 +7,7 @@ export const sanityClient = createClient({
   apiVersion: '2023-05-03', // Current API version
 })
 
-// Helper function to get product data
+// Helper function to get product data for listings
 export async function getProducts() {
   const query = `*[_type == "product" && isAvailable == true] {
     _id,
@@ -17,13 +17,20 @@ export async function getProducts() {
     price,
     "mainImageUrl": mainImage.asset->url,
     tags,
-    festivalAttribution
+    festivalAttribution,
+    hasVariants,
+    variants[] {
+      priceAdjustment,
+      isAvailable,
+      inventory,
+      "variantImageUrl": variantImage.asset->url
+    }
   }`
   
   return await sanityClient.fetch(query)
 }
 
-// Helper function to get single product
+// Helper function to get single product with full variant data INCLUDING IMAGES
 export async function getProduct(slug) {
   const query = `*[_type == "product" && slug.current == $slug][0] {
     _id,
@@ -33,6 +40,7 @@ export async function getProduct(slug) {
     shortDescription,
     price,
     compareAtPrice,
+    inventory,
     "mainImageUrl": mainImage.asset->url,
     "galleryImages": gallery[].asset->url,
     tags,
@@ -43,9 +51,92 @@ export async function getProduct(slug) {
     artistNotes,
     timeToMake,
     isOneOfAKind,
-    variants,
-    isAvailable
+    isAvailable,
+    hasVariants,
+    variantOptions {
+      sizes,
+      colors,
+      materials,
+      styles
+    },
+    variants[] {
+      sku,
+      name,
+      size,
+      color,
+      material,
+      style,
+      priceAdjustment,
+      inventory,
+      isAvailable,
+      "variantImageUrl": variantImage.asset->url
+    }
   }`
   
   return await sanityClient.fetch(query, { slug })
+}
+
+// Helper function to get products with variant information for listing pages
+export async function getProductsWithVariants() {
+  const query = `*[_type == "product" && isAvailable == true] {
+    _id,
+    title,
+    slug,
+    shortDescription,
+    price,
+    "mainImageUrl": mainImage.asset->url,
+    tags,
+    festivalAttribution,
+    hasVariants,
+    "priceRange": {
+      "min": price,
+      "max": price
+    },
+    "availableVariants": count(variants[isAvailable == true && inventory > 0]),
+    "totalStock": sum(variants[isAvailable == true].inventory)
+  }`
+  
+  return await sanityClient.fetch(query)
+}
+
+// Helper function to check variant availability
+export async function getVariantAvailability(productId, variantSku) {
+  const query = `*[_type == "product" && _id == $productId][0] {
+    "variant": variants[sku == $variantSku][0] {
+      sku,
+      inventory,
+      isAvailable,
+      "variantImageUrl": variantImage.asset->url
+    }
+  }`
+  
+  return await sanityClient.fetch(query, { productId, variantSku })
+}
+
+// Helper function for search with variant support
+export async function searchProducts(searchTerm) {
+  const query = `*[
+    _type == "product" && 
+    isAvailable == true && 
+    (
+      title match $searchTerm + "*" ||
+      shortDescription match $searchTerm + "*" ||
+      tags[] match $searchTerm + "*" ||
+      variants[].name match $searchTerm + "*" ||
+      variants[].color match $searchTerm + "*" ||
+      variants[].size match $searchTerm + "*"
+    )
+  ] {
+    _id,
+    title,
+    slug,
+    shortDescription,
+    price,
+    "mainImageUrl": mainImage.asset->url,
+    tags,
+    hasVariants,
+    "hasVariantImages": count(variants[defined(variantImage)]) > 0
+  }`
+  
+  return await sanityClient.fetch(query, { searchTerm })
 }
