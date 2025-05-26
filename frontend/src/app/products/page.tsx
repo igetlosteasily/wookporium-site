@@ -15,7 +15,15 @@ interface Product {
   festivalAttribution?: string
 }
 
+// STATIC: Generate static props at build time
+export async function generateStaticParams() {
+  // This ensures the page is generated at build time
+  return []
+}
+
+// STATIC: Pre-render this page at build time
 export default async function ProductsPage() {
+  // Data fetching happens at BUILD TIME for static export
   const products: Product[] = await getProducts()
 
   return (

@@ -5,9 +5,9 @@ import { Metadata } from 'next'
 import ProductPageClient from './ProductPageClient'
 
 interface ProductPageProps {
-  params: Promise<{
+  params: {
     slug: string
-  }>
+  }
 }
 
 // Generate static params for all products at build time
@@ -18,10 +18,10 @@ export async function generateStaticParams() {
   }))
 }
 
-// Generate metadata for SEO
+// STATIC: Generate metadata at build time using sync params
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const resolvedParams = await params
-  const product = await getProduct(resolvedParams.slug)
+  // No await params - use directly for static generation
+  const product = await getProduct(params.slug)
   
   if (!product) {
     return {
@@ -40,9 +40,10 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 }
 
+// STATIC: Convert to sync component for static export
 export default async function ProductPage({ params }: ProductPageProps) {
-  const resolvedParams = await params
-  const product = await getProduct(resolvedParams.slug)
+  // No await params - use directly for static generation
+  const product = await getProduct(params.slug)
 
   // Handle product not found
   if (!product) {
