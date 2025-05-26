@@ -30,55 +30,36 @@ interface VariantSelectorProps {
   onVariantChange: (variant: Variant | null, finalPrice: number) => void;
 }
 
-export default function VariantSelector({
-    hasVariants,
-    variantOptions,
-    variants,
-    basePrice,
-    onVariantChange
-  }: VariantSelectorProps) {
-    // Ensure we have a valid base price with fallback
-    const safeBasePrice = typeof basePrice === 'number' && !isNaN(basePrice) ? basePrice : 0;
-    
-    const [selectedOptions, setSelectedOptions] = useState<{
-      size?: string;
-      color?: string;
-      material?: string;
-      style?: string;
-    }>({});
-  
-    const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
-    const [finalPrice, setFinalPrice] = useState(safeBasePrice);
-  
-    // MOVED: Find matching variant based on selected options - BEFORE early return
-    useEffect(() => {
-      const matchingVariant = variants.find(variant => {
-        return (!selectedOptions.size || variant.size === selectedOptions.size) &&
-               (!selectedOptions.color || variant.color === selectedOptions.color) &&
-               (!selectedOptions.material || variant.material === selectedOptions.material) &&
-               (!selectedOptions.style || variant.style === selectedOptions.style);
-      });
-  
-      if (matchingVariant) {
-        const adjustment = matchingVariant.priceAdjustment || 0;
-        const newPrice = safeBasePrice + adjustment;
-        setSelectedVariant(matchingVariant);
-        setFinalPrice(newPrice);
-        onVariantChange(matchingVariant, newPrice);
-      } else {
-        setSelectedVariant(null);
-        setFinalPrice(safeBasePrice);
-        onVariantChange(null, safeBasePrice);
-      }
-    }, [selectedOptions, variants, safeBasePrice, onVariantChange]);
-  
-    // NOW the early return comes AFTER all hooks
-    if (!hasVariants || !variants || variants.length === 0) {
-      return null;
-    }
+// Define the type for selectedOptions keys
+type SelectedOptionsKey = 'size' | 'color' | 'material' | 'style';
 
+export default function VariantSelector({
+  hasVariants,
+  variantOptions,
+  variants,
+  basePrice,
+  onVariantChange
+}: VariantSelectorProps) {
+  // Ensure we have a valid base price with fallback
+  const safeBasePrice = typeof basePrice === 'number' && !isNaN(basePrice) ? basePrice : 0;
+  
+  const [selectedOptions, setSelectedOptions] = useState<{
+    size?: string;
+    color?: string;
+    material?: string;
+    style?: string;
+  }>({});
+
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
+  const [finalPrice, setFinalPrice] = useState(safeBasePrice);
+
+  // ALL HOOKS MUST BE BEFORE ANY CONDITIONAL RETURNS
   // Find matching variant based on selected options
   useEffect(() => {
+    if (!hasVariants || !variants || variants.length === 0) {
+      return; // Early return within useEffect is fine
+    }
+
     const matchingVariant = variants.find(variant => {
       return (!selectedOptions.size || variant.size === selectedOptions.size) &&
              (!selectedOptions.color || variant.color === selectedOptions.color) &&
@@ -97,15 +78,20 @@ export default function VariantSelector({
       setFinalPrice(safeBasePrice);
       onVariantChange(null, safeBasePrice);
     }
-  }, [selectedOptions, variants, safeBasePrice, onVariantChange]);
+  }, [selectedOptions, variants, safeBasePrice, onVariantChange, hasVariants]);
 
-  // Map plural option types to singular variant properties
-  const getVariantProperty = (optionType: keyof VariantOptions): keyof Variant => {
-    const mapping = {
-      sizes: 'size' as keyof Variant,
-      colors: 'color' as keyof Variant,
-      materials: 'material' as keyof Variant,
-      styles: 'style' as keyof Variant
+  // NOW all the conditional returns come AFTER all hooks
+  if (!hasVariants || !variants || variants.length === 0) {
+    return null;
+  }
+
+  // Map plural option types to singular variant properties with proper typing
+  const getVariantProperty = (optionType: keyof VariantOptions): SelectedOptionsKey => {
+    const mapping: Record<keyof VariantOptions, SelectedOptionsKey> = {
+      sizes: 'size',
+      colors: 'color',
+      materials: 'material',
+      styles: 'style'
     };
     return mapping[optionType];
   };
@@ -132,7 +118,7 @@ export default function VariantSelector({
     
     setSelectedOptions(prev => ({
       ...prev,
-      [variantProperty as keyof typeof selectedOptions]: prev[variantProperty as keyof typeof selectedOptions] === value ? undefined : value
+      [variantProperty]: prev[variantProperty] === value ? undefined : value
     }));
   };
 
@@ -141,7 +127,7 @@ export default function VariantSelector({
 
     const availableOptions = getAvailableOptions(optionType);
     const variantProperty = getVariantProperty(optionType);
-    const selectedValue = selectedOptions[variantProperty as keyof typeof selectedOptions];
+    const selectedValue = selectedOptions[variantProperty];
 
     return (
       <div className="space-y-3">
