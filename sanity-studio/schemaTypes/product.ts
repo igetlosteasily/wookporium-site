@@ -32,7 +32,7 @@ export default defineType({
     }),
     defineField({
       name: 'price',
-      title: 'Price',
+      title: 'Base Price',
       type: 'number'
     }),
     defineField({
@@ -42,7 +42,7 @@ export default defineType({
     }),
     defineField({
       name: 'inventory',
-      title: 'Inventory Count',
+      title: 'Base Inventory Count',
       type: 'number'
     }),
     defineField({
@@ -85,28 +85,59 @@ export default defineType({
       title: 'Instagram Post URL',
       type: 'url'
     }),
+
+    // VARIANTS SECTION
+    defineField({
+      name: 'hasVariants',
+      title: 'This product has variants',
+      type: 'boolean',
+      initialValue: false
+    }),
+    defineField({
+      name: 'variantOptions',
+      title: 'Variant Options',
+      type: 'object',
+      fields: [
+        {
+          name: 'sizes',
+          title: 'Available Sizes',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: { layout: 'tags' }
+        },
+        {
+          name: 'colors',
+          title: 'Available Colors',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: { layout: 'tags' }
+        },
+        {
+          name: 'materials',
+          title: 'Available Materials',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: { layout: 'tags' }
+        },
+        {
+          name: 'styles',
+          title: 'Available Styles',
+          type: 'array',
+          of: [{type: 'string'}],
+          options: { layout: 'tags' }
+        }
+      ],
+      hidden: ({parent}) => !parent?.hasVariants
+    }),
     defineField({
       name: 'variants',
       title: 'Product Variants',
       type: 'array',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            {
-              name: 'name',
-              title: 'Variant Name',
-              type: 'string'
-            },
-            {
-              name: 'price',
-              title: 'Price Override',
-              type: 'number'
-            }
-          ]
-        }
-      ]
+      of: [{type: 'variant'}], // References the separate variant schema
+      hidden: ({parent}) => !parent?.hasVariants
     }),
+
+    // EXISTING FIELDS
     defineField({
       name: 'materials',
       title: 'Materials Used',
