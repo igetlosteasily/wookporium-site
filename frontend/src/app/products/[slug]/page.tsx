@@ -2,7 +2,6 @@ import { getProduct, getProducts } from '@/lib/sanity'
 import CartTrigger from '@/components/CartTrigger'
 import Link from 'next/link'
 import { Metadata } from 'next'
-import ProductImages from './ProductImages'
 import ProductPageClient from './ProductPageClient'
 
 interface ProductPageProps {
