@@ -94,9 +94,10 @@ export default async function ProductsPage() {
                   </div>
                 )}
 
-                {/* Add to Cart Button */}
+                {/* Add to Cart Button - Updated for new CartButton interface */}
                 <CartButton 
                   product={product}
+                  selectedVariant={null}
                   finalPrice={product.price}
                   className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 >
