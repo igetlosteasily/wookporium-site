@@ -5,8 +5,10 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true
+  },
+  experimental: {
+    // Empty experimental object
   }
-  // Remove the serverActions line entirely - it's not needed for static export
 };
 
 export default nextConfig;
