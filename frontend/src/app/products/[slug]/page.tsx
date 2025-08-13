@@ -5,9 +5,9 @@ import { Metadata } from 'next'
 import ProductPageClient from './ProductPageClient'
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 // Generate static params for all products at build time
@@ -18,10 +18,10 @@ export async function generateStaticParams() {
   }))
 }
 
-// STATIC: Generate metadata at build time using sync params
+// Generate metadata for SEO - Next.js 15 compatible
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  // No await params - use directly for static generation
-  const product = await getProduct(params.slug)
+  const resolvedParams = await params
+  const product = await getProduct(resolvedParams.slug)
   
   if (!product) {
     return {
@@ -40,25 +40,25 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 }
 
-// STATIC: Convert to sync component for static export
+// Next.js 15 compatible async component with await params
 export default async function ProductPage({ params }: ProductPageProps) {
-  // No await params - use directly for static generation
-  const product = await getProduct(params.slug)
+  const resolvedParams = await params
+  const product = await getProduct(resolvedParams.slug)
 
   // Handle product not found
   if (!product) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center px-4">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Product Not Found
           </h1>
-          <p className="text-xl text-purple-200 mb-6">
+          <p className="text-xl text-gray-600 mb-6">
             Sorry, we couldn&apos;t find that product.
           </p>
           <Link 
             href="/products/" 
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300"
+            className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
           >
             Browse All Products
           </Link>
@@ -68,17 +68,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Cart and Back Link */}
         <div className="flex justify-between items-center mb-8">
           <Link 
             href="/products/" 
-            className="text-purple-300 hover:text-white transition-colors"
+            className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
           >
             ← Back to Products
           </Link>
-          <CartTrigger className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700" />
+          <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
         </div>
 
         {/* Pass product to client component that handles all the interactive logic */}

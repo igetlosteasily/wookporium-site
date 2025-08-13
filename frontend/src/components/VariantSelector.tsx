@@ -131,7 +131,7 @@ export default function VariantSelector({
 
     return (
       <div className="space-y-3">
-        <h4 className="text-lg font-semibold text-white">{title}</h4>
+        <h4 className="text-lg font-semibold text-gray-900">{title}</h4>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
           {options.map((option) => {
             const isAvailable = availableOptions.includes(option);
@@ -145,10 +145,10 @@ export default function VariantSelector({
                 className={`
                   px-3 py-2 rounded-lg border-2 text-sm font-medium transition-all duration-200
                   ${isSelected 
-                    ? 'border-pink-400 bg-pink-400/20 text-pink-300' 
+                    ? 'border-gray-900 bg-gray-900 text-white' 
                     : isAvailable
-                      ? 'border-purple-400/50 text-purple-200 hover:border-purple-400 hover:bg-purple-400/10'
-                      : 'border-gray-600 text-gray-500 cursor-not-allowed opacity-50'
+                      ? 'border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
+                      : 'border-gray-200 text-gray-400 cursor-not-allowed opacity-50'
                   }
                 `}
               >
@@ -175,16 +175,16 @@ export default function VariantSelector({
   const safeFinalPrice = typeof finalPrice === 'number' && !isNaN(finalPrice) ? finalPrice : safeBasePrice;
 
   return (
-    <div className="space-y-6 p-4 bg-white/5 rounded-xl border border-white/10">
+    <div className="space-y-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold text-white">Options</h3>
+        <h3 className="text-xl font-semibold text-gray-900">Options</h3>
         {selectedVariant && (
           <div className="text-right">
-            <div className="text-2xl font-bold text-pink-400">
+            <div className="text-2xl font-bold text-gray-900">
               ${safeFinalPrice.toFixed(2)}
             </div>
             {selectedVariant.priceAdjustment && selectedVariant.priceAdjustment !== 0 && (
-              <div className="text-sm text-purple-300">
+              <div className="text-sm text-gray-600">
                 {selectedVariant.priceAdjustment > 0 ? '+' : ''}${(selectedVariant.priceAdjustment || 0).toFixed(2)}
               </div>
             )}
@@ -199,28 +199,28 @@ export default function VariantSelector({
       {variantOptions?.styles && renderOptionGroup('Style', 'styles', variantOptions.styles)}
 
       {/* Selection status */}
-      <div className="pt-4 border-t border-white/10">
+      <div className="pt-4 border-t border-gray-200">
         {selectedVariant ? (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-green-400">✓</span>
-              <span className="text-white font-medium">{selectedVariant.name}</span>
+              <span className="text-green-600">✓</span>
+              <span className="text-gray-900 font-medium">{selectedVariant.name}</span>
             </div>
-            <div className="text-sm text-purple-200">
+            <div className="text-sm text-gray-600">
               Stock: {selectedVariant.inventory || 0} available
             </div>
             {selectedVariant.sku && (
-              <div className="text-xs text-purple-300">
+              <div className="text-xs text-gray-500">
                 SKU: {selectedVariant.sku}
               </div>
             )}
           </div>
         ) : hasRequiredSelections() ? (
-          <div className="text-amber-300">
-            <span className="text-amber-400">⚠</span> This combination is not available
+          <div className="text-amber-600">
+            <span className="text-amber-500">⚠</span> This combination is not available
           </div>
         ) : (
-          <div className="text-purple-300">
+          <div className="text-gray-600">
             Please select all options above
           </div>
         )}

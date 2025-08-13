@@ -15,30 +15,72 @@ interface Product {
   festivalAttribution?: string
 }
 
-// STATIC: Generate static props at build time
-export async function generateStaticParams() {
-  // This ensures the page is generated at build time
-  return []
-}
-
-// STATIC: Pre-render this page at build time
 export default async function ProductsPage() {
-  // Data fetching happens at BUILD TIME for static export
   const products: Product[] = await getProducts()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-      <div className="container mx-auto px-4 py-8">
-        {/* Header with Cart */}
-        <div className="text-center mb-12">
-          <div className="flex justify-end mb-4">
-            <CartTrigger className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700" />
+    <div className="min-h-screen bg-white">
+      {/* Navigation Bar - Same as other pages */}
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo/Brand */}
+            <Link href="/" className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-sm">W</span>
+              </div>
+              <span className="text-gray-900 font-semibold text-lg">Wookporium</span>
+            </Link>
+
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center space-x-8">
+              <Link href="/collections/tops" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Tops
+              </Link>
+              <Link href="/collections/bottoms" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Bottoms
+              </Link>
+              <Link href="/collections/outerwear" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Outerwear
+              </Link>
+              <Link href="/collections/jewelry" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Jewelry
+              </Link>
+              <Link href="/collections/apparel" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Apparel
+              </Link>
+              <Link href="/collections/knick-knacks" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Knick-knacks
+              </Link>
+              <Link href="/links" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                Links
+              </Link>
+              <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                About Us
+              </Link>
+            </div>
+
+            {/* Cart */}
+            <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
           </div>
-          <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-4">
-            The Wookporium
+        </div>
+      </nav>
+
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Link 
+            href="/" 
+            className="text-gray-600 hover:text-gray-900 transition-colors mb-4 inline-block font-medium"
+          >
+            ← Back to Home
+          </Link>
+          
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            All Products
           </h1>
-          <p className="text-xl text-purple-200 max-w-2xl mx-auto">
-            Handcrafted festival apparel, natural jewelry, and unique accessories for your journey
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Discover our complete collection of handcrafted festival apparel, natural jewelry, and unique accessories
           </p>
         </div>
 
@@ -47,7 +89,7 @@ export default async function ProductsPage() {
           {products.map((product) => (
             <div
               key={product._id}
-              className="bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-white/20"
+              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100"
             >
               {/* Product Image */}
               {product.mainImageUrl && (
@@ -65,24 +107,24 @@ export default async function ProductsPage() {
               {/* Product Info */}
               <div className="p-6">
                 <Link href={`/products/${product.slug.current}/`}>
-                    <h3 className="text-xl font-semibold text-white mb-2 hover:text-pink-300 transition-colors cursor-pointer">
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2 hover:text-gray-700 transition-colors cursor-pointer">
                         {product.title}
                     </h3>
                 </Link>
                 
                 {product.shortDescription && (
-                  <p className="text-purple-200 text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
                     {product.shortDescription}
                   </p>
                 )}
 
                 {/* Price */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl font-bold text-pink-400">
+                  <span className="text-2xl font-bold text-gray-900">
                     ${product.price}
                   </span>
                   {product.festivalAttribution && (
-                    <span className="text-xs text-purple-300 bg-purple-500/20 px-2 py-1 rounded-full">
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                       {product.festivalAttribution}
                     </span>
                   )}
@@ -94,7 +136,7 @@ export default async function ProductsPage() {
                     {product.tags.slice(0, 3).map((tag, index) => (
                       <span
                         key={index}
-                        className="text-xs bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-pink-300 px-2 py-1 rounded-full border border-pink-500/30"
+                        className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full border border-gray-200"
                       >
                         #{tag}
                       </span>
@@ -102,15 +144,13 @@ export default async function ProductsPage() {
                   </div>
                 )}
 
-                {/* Add to Cart Button - Updated for new CartButton interface */}
-                <CartButton 
-                  product={product}
-                  selectedVariant={null}
-                  finalPrice={product.price}
-                  className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                {/* Add to Cart Button - Temporarily disabled */}
+                <button
+                  disabled
+                  className="w-full bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed"
                 >
-                  Add to Cart - ${product.price}
-                </CartButton>
+                  Cart Coming Soon
+                </button>
               </div>
             </div>
           ))}
@@ -119,9 +159,17 @@ export default async function ProductsPage() {
         {/* No Products Message */}
         {products.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-xl text-purple-300">
-              No products available at the moment. Check back soon for amazing festival gear!
+            <div className="text-6xl mb-6">📦</div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">No Products Yet</h3>
+            <p className="text-xl text-gray-600 mb-8">
+              Products will appear here once they're added to your Sanity CMS.
             </p>
+            <Link 
+              href="/"
+              className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
+            >
+              Back to Home
+            </Link>
           </div>
         )}
       </div>

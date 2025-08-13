@@ -118,11 +118,11 @@ export default function ProductVariantSection({ product, onVariantChange }: Prod
       {/* Dynamic Price Display - Only show if variants exist and affect price */}
       {product.hasVariants && (
         <div className="flex items-center gap-4">
-          <span className="text-3xl font-bold text-pink-400">
+          <span className="text-3xl font-bold text-gray-900">
             {getPriceDisplay()}
           </span>
           {selectedVariant && (selectedVariant.priceAdjustment || 0) !== 0 && (
-            <span className="text-lg text-purple-300">
+            <span className="text-lg text-gray-600">
               (Base: ${basePrice.toFixed(2)} {(selectedVariant.priceAdjustment || 0) > 0 ? '+' : ''}${(selectedVariant.priceAdjustment || 0).toFixed(2)})
             </span>
           )}
@@ -153,16 +153,16 @@ export default function ProductVariantSection({ product, onVariantChange }: Prod
         {/* Availability Status */}
         <div className="text-center">
           {isProductAvailable() ? (
-            <span className="text-green-400 text-sm">
+            <span className="text-green-600 text-sm">
               ✓ {getCurrentStock()} in stock
               {selectedVariant && (
-                <span className="text-purple-300 ml-2">
+                <span className="text-gray-500 ml-2">
                   ({selectedVariant.name})
                 </span>
               )}
             </span>
           ) : (
-            <span className="text-red-400 text-sm">✗ Out of Stock</span>
+            <span className="text-red-600 text-sm">✗ Out of Stock</span>
           )}
         </div>
       </div>

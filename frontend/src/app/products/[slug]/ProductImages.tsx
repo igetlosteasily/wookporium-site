@@ -93,7 +93,7 @@ export default function ProductImages({ product, selectedVariant }: ProductImage
   return (
     <div className="space-y-4">
       {/* Main Image Display */}
-      <div className="aspect-square overflow-hidden rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 relative">
+      <div className="aspect-square overflow-hidden rounded-lg bg-white border border-gray-200 relative shadow-sm">
         {displayImage && (
           <>
             <Image
@@ -107,7 +107,7 @@ export default function ProductImages({ product, selectedVariant }: ProductImage
             
             {/* Variant indicator badge */}
             {selectedVariant?.variantImageUrl === displayImage && mounted && (
-              <div className="absolute top-4 left-4 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
+              <div className="absolute top-4 left-4 bg-gray-900 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg">
                 {selectedVariant.name}
               </div>
             )}
@@ -126,12 +126,12 @@ export default function ProductImages({ product, selectedVariant }: ProductImage
             <div 
               key={`${imageUrl}-${index}`} // More stable key
               onClick={() => mounted && setSelectedImage(imageUrl)}
-              className={`aspect-square overflow-hidden rounded-xl cursor-pointer transition-all duration-300 backdrop-blur-md border relative ${
+              className={`aspect-square overflow-hidden rounded-lg cursor-pointer transition-all duration-300 border relative ${
                 isSelected
-                  ? 'ring-2 ring-pink-400 bg-pink-500/20 border-pink-400/50' 
+                  ? 'ring-2 ring-gray-900 bg-gray-50 border-gray-900' 
                   : isVariantImage
-                    ? 'border-purple-400/50 bg-purple-500/10 hover:bg-purple-500/20'
-                    : 'border-white/20 bg-white/10 hover:bg-white/20'
+                    ? 'border-gray-400 bg-gray-50 hover:bg-gray-100'
+                    : 'border-gray-200 bg-white hover:bg-gray-50'
               }`}
               style={{ 
                 // Use inline styles for dynamic properties to avoid className hydration issues
@@ -151,7 +151,7 @@ export default function ProductImages({ product, selectedVariant }: ProductImage
               
               {/* Variant image indicator */}
               {isVariantImage && mounted && (
-                <div className="absolute top-1 right-1 w-3 h-3 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full shadow-md"></div>
+                <div className="absolute top-1 right-1 w-3 h-3 bg-gray-900 rounded-full shadow-md"></div>
               )}
             </div>
           )
@@ -160,14 +160,14 @@ export default function ProductImages({ product, selectedVariant }: ProductImage
 
       {/* Image context info */}
       {mounted && selectedVariant && (
-        <div className="text-center text-sm text-purple-300">
+        <div className="text-center text-sm text-gray-500">
           {selectedVariant.variantImageUrl === selectedImage ? (
             <span className="inline-flex items-center gap-2">
-              <span className="w-2 h-2 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-gray-900 rounded-full"></span>
               Showing {selectedVariant.name} variant
             </span>
           ) : (
-            <span className="text-purple-400">
+            <span className="text-gray-600">
               Variant: {selectedVariant.name}
             </span>
           )}

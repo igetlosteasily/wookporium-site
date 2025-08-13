@@ -10,7 +10,11 @@ interface Variant {
   priceAdjustment: number;
   inventory: number;
   isAvailable: boolean;
-  variantImageUrl?: string;
+  variantImage?: {
+    asset: {
+      url: string;
+    };
+  };
 }
 
 interface Product {
@@ -48,11 +52,11 @@ export default function CartButton({
   disabled = false 
 }: CartButtonProps) {
   // Use consistent production URL for static export
-  const baseUrl = 'https://thewookporium.com';
+  const baseUrl = 'https://wookporium.com'; // Updated to new domain!
   const productUrl = `${baseUrl}/products/${product.slug.current}/`;
   
   // Determine image URL (variant image takes priority)
-  const imageUrl = selectedVariant?.variantImageUrl || 
+  const imageUrl = selectedVariant?.variantImage?.asset?.url || 
                    product.mainImage?.asset?.url || 
                    '';
 
@@ -81,9 +85,9 @@ export default function CartButton({
   ].filter(Boolean).join('|') : '';
 
   // Check if button should be disabled
-  const isDisabled = !!(disabled || 
+  const isDisabled = disabled || 
     (product.hasVariants && !selectedVariant) ||
-    (selectedVariant && (!selectedVariant.isAvailable || selectedVariant.inventory <= 0)));
+    (selectedVariant && (!selectedVariant.isAvailable || selectedVariant.inventory <= 0));
 
   // Generate button text
   const getButtonText = () => {
@@ -103,10 +107,10 @@ export default function CartButton({
   return (
     <button
       className={`
-        snipcart-add-item font-semibold py-3 px-6 rounded-xl transition-all duration-300 
+        snipcart-add-item font-semibold py-3 px-6 rounded-lg transition-all duration-300 
         ${isDisabled 
-          ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-          : 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white transform hover:scale-105 shadow-lg hover:shadow-xl'
+          ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+          : 'bg-gray-900 hover:bg-gray-800 text-white transform hover:scale-105 shadow-sm hover:shadow-md'
         } 
         ${className}
       `}

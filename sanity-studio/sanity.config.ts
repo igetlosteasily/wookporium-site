@@ -1,17 +1,14 @@
 import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
+import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 
 export default defineConfig({
   name: 'default',
-  title: 'The Wookporium',
-
-  projectId: 'xuk0sjea',
+  title: 'Wookporium',
+  projectId: 'k3xyl4wr', // Your new project ID
   dataset: 'production',
-
-  plugins: [structureTool(), visionTool()],
-
+  plugins: [deskTool(), visionTool()],
   schema: {
     types: schemaTypes,
   },
