@@ -113,17 +113,8 @@ export default function LinksPage() {
               </Link>
             </div>
 
-            {/* Mobile + Desktop Cart/Menu */}
-            <div className="flex items-center gap-4">
-              {/* Desktop Cart */}
-              <CartTrigger className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white" />
-              
-              {/* Mobile Cart */}
-              <CartTrigger className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3" />
-              
-              {/* Mobile Navigation - Temporarily disabled */}
-              {/* <MobileNav brandSettings={null} /> */}
-            </div>
+            {/* Cart */}
+            <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
           </div>
         </div>
       </nav>
@@ -161,7 +152,7 @@ export default function LinksPage() {
                 
                 <div className="space-y-4">
                   {category.links.map((link, linkIndex) => (
-                    
+                    <a
                       key={linkIndex}
                       href={link.url}
                       target="_blank"
