@@ -1,15 +1,15 @@
-import { createClient } from 'next-sanity'
+import { createClient } from '@sanity/client'
 
-export const sanityClient = createClient({
-  projectId: 'k3xyl4wr', // Your Sanity project ID
-  dataset: 'production', // Your dataset name
-  useCdn: true, // Use CDN for faster loading
-  apiVersion: '2023-05-03', // Current API version
+export const client = createClient({
+  projectId: 'k3xyl4wr',
+  dataset: 'production',
+  useCdn: true,
+  apiVersion: '2023-05-03',
 })
 
-// Helper function to get product data for listings
+// Existing product functions
 export async function getProducts() {
-  const query = `*[_type == "product" && isAvailable == true] {
+  return client.fetch(`*[_type == "product" && isAvailable == true] | order(_createdAt desc) {
     _id,
     title,
     slug,
@@ -17,22 +17,12 @@ export async function getProducts() {
     price,
     "mainImageUrl": mainImage.asset->url,
     tags,
-    festivalAttribution,
-    hasVariants,
-    variants[] {
-      priceAdjustment,
-      isAvailable,
-      inventory,
-      "variantImageUrl": variantImage.asset->url
-    }
-  }`
-  
-  return await sanityClient.fetch(query)
+    festivalAttribution
+  }`)
 }
 
-// Helper function to get single product with full variant data INCLUDING IMAGES
 export async function getProduct(slug) {
-  const query = `*[_type == "product" && slug.current == $slug][0] {
+  return client.fetch(`*[_type == "product" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -46,19 +36,8 @@ export async function getProduct(slug) {
     tags,
     festivalAttribution,
     instagramPost,
-    materials,
-    careInstructions,
-    artistNotes,
-    timeToMake,
-    isOneOfAKind,
-    isAvailable,
     hasVariants,
-    variantOptions {
-      sizes,
-      colors,
-      materials,
-      styles
-    },
+    variantOptions,
     variants[] {
       sku,
       name,
@@ -70,73 +49,80 @@ export async function getProduct(slug) {
       inventory,
       isAvailable,
       "variantImageUrl": variantImage.asset->url
-    }
-  }`
-  
-  return await sanityClient.fetch(query, { slug })
-}
-
-// Helper function to get products with variant information for listing pages
-export async function getProductsWithVariants() {
-  const query = `*[_type == "product" && isAvailable == true] {
-    _id,
-    title,
-    slug,
-    shortDescription,
-    price,
-    "mainImageUrl": mainImage.asset->url,
-    tags,
-    festivalAttribution,
-    hasVariants,
-    "priceRange": {
-      "min": price,
-      "max": price
     },
-    "availableVariants": count(variants[isAvailable == true && inventory > 0]),
-    "totalStock": sum(variants[isAvailable == true].inventory)
-  }`
-  
-  return await sanityClient.fetch(query)
+    materials,
+    careInstructions,
+    timeToMake,
+    artistNotes,
+    isOneOfAKind,
+    isAvailable
+  }`, { slug })
 }
 
-// Helper function to check variant availability
-export async function getVariantAvailability(productId, variantSku) {
-  const query = `*[_type == "product" && _id == $productId][0] {
-    "variant": variants[sku == $variantSku][0] {
-      sku,
-      inventory,
-      isAvailable,
-      "variantImageUrl": variantImage.asset->url
+// NEW: Brand Settings functions
+export async function getBrandSettings() {
+  return client.fetch(`*[_type == "brandSettings"][0] {
+    "logoUrl": logo.asset->url,
+    logoText,
+    logoIcon,
+    "primaryColor": primaryColor.hex,
+    "secondaryColor": secondaryColor.hex,
+    "backgroundColor": backgroundColor.hex,
+    "sectionBackgroundColor": sectionBackgroundColor.hex,
+    heroTitle,
+    heroSubtitle,
+    "heroBackgroundImageUrl": heroBackgroundImage.asset->url,
+    themeStyle,
+    buttonStyle,
+    headerFont,
+    bodyFont,
+    fontWeightStyle,
+    featuredProducts[]-> {
+      _id,
+      title,
+      slug,
+      "mainImageUrl": mainImage.asset->url,
+      price
     }
-  }`
-  
-  return await sanityClient.fetch(query, { productId, variantSku })
+  }`)
 }
 
-// Helper function for search with variant support
-export async function searchProducts(searchTerm) {
-  const query = `*[
-    _type == "product" && 
-    isAvailable == true && 
-    (
-      title match $searchTerm + "*" ||
-      shortDescription match $searchTerm + "*" ||
-      tags[] match $searchTerm + "*" ||
-      variants[].name match $searchTerm + "*" ||
-      variants[].color match $searchTerm + "*" ||
-      variants[].size match $searchTerm + "*"
-    )
-  ] {
-    _id,
-    title,
-    slug,
-    shortDescription,
-    price,
-    "mainImageUrl": mainImage.asset->url,
-    tags,
-    hasVariants,
-    "hasVariantImages": count(variants[defined(variantImage)]) > 0
-  }`
+// NEW: Homepage Content functions
+export async function getHomepageContent() {
+  return client.fetch(`*[_type == "homepageContent"][0] {
+    valuesSectionTitle,
+    values[] {
+      emoji,
+      title,
+      description
+    },
+    collectionsSectionTitle,
+    collections[] {
+      emoji,
+      title,
+      description,
+      linkUrl
+    },
+    primaryButtonText,
+    primaryButtonUrl,
+    secondaryButtonText,
+    secondaryButtonUrl,
+    footerDescription
+  }`)
+}
+
+// Utility function to get complete homepage data
+export async function getCompleteHomepageData() {
+  const [brandSettings, homepageContent, products] = await Promise.all([
+    getBrandSettings(),
+    getHomepageContent(),
+    getProducts()
+  ])
   
-  return await sanityClient.fetch(query, { searchTerm })
+  return {
+    brandSettings,
+    homepageContent,
+    featuredProducts: products.slice(0, 6), // First 6 as featured
+    newArrivals: products.slice(0, 4) // First 4 as new arrivals
+  }
 }

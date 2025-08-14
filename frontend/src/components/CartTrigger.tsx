@@ -2,12 +2,14 @@ import React from 'react';
 
 interface CartTriggerProps {
   className?: string;
+  style?: React.CSSProperties; // Add style prop support
 }
 
-export default function CartTrigger({ className = '' }: CartTriggerProps) {
+export default function CartTrigger({ className = '', style }: CartTriggerProps) {
   return (
     <button
       className={`snipcart-checkout font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center gap-2 ${className}`}
+      style={style} // Pass through style prop
       aria-label="Open shopping cart"
     >
       <svg 

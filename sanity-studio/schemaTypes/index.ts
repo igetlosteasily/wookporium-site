@@ -1,5 +1,13 @@
 import blockContent from './blockContent'
 import product from './product'
-import variant from './variant' // Add this line
+import variant from './variant'
+import brandSettings from './brandSettings'
+import homepageContent from './homepageContent'
 
-export const schemaTypes = [blockContent, product, variant] // Add variant here
+export const schemaTypes = [
+  product,
+  variant,
+  blockContent,
+  brandSettings,
+  homepageContent,
+]

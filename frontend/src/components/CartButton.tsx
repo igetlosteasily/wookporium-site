@@ -114,7 +114,7 @@ export default function CartButton({
         } 
         ${className}
       `}
-      disabled={isDisabled}
+      disabled={!!isDisabled}
       data-item-id={itemId}
       data-item-price={finalPrice}
       data-item-url={productUrl}
