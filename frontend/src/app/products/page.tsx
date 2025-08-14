@@ -1,5 +1,7 @@
 import { getProducts } from '@/lib/sanity'
+import CartButton from '@/components/CartButton'
 import CartTrigger from '@/components/CartTrigger'
+import MobileNav from '@/components/MobileNav'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -19,7 +21,7 @@ export default async function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Bar - Same as other pages */}
+      {/* Navigation Bar with Mobile Support */}
       <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
@@ -31,7 +33,7 @@ export default async function ProductsPage() {
               <span className="text-gray-900 font-semibold text-lg">Wookporium</span>
             </Link>
 
-            {/* Navigation Links */}
+            {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
               <Link href="/collections/tops" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
                 Tops
@@ -59,8 +61,17 @@ export default async function ProductsPage() {
               </Link>
             </div>
 
-            {/* Cart */}
-            <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
+            {/* Mobile + Desktop Cart/Menu */}
+            <div className="flex items-center gap-4">
+              {/* Desktop Cart */}
+              <CartTrigger className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white" />
+              
+              {/* Mobile Cart */}
+              <CartTrigger className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3" />
+              
+              {/* Mobile Navigation */}
+              <MobileNav brandSettings={null} />
+            </div>
           </div>
         </div>
       </nav>
@@ -143,13 +154,15 @@ export default async function ProductsPage() {
                   </div>
                 )}
 
-                {/* Add to Cart Button - Temporarily disabled */}
-                <button
-                  disabled
-                  className="w-full bg-gray-300 text-gray-500 font-semibold py-3 px-6 rounded-lg cursor-not-allowed"
+                {/* Working Add to Cart Button */}
+                <CartButton 
+                  product={product}
+                  selectedVariant={null}
+                  finalPrice={product.price}
+                  className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md"
                 >
-                  Cart Coming Soon
-                </button>
+                  Add to Cart - ${product.price}
+                </CartButton>
               </div>
             </div>
           ))}

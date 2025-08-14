@@ -1,5 +1,6 @@
 import { getProduct, getProducts } from '@/lib/sanity'
 import CartTrigger from '@/components/CartTrigger'
+import MobileNav from '@/components/MobileNav'
 import Link from 'next/link'
 import { Metadata } from 'next'
 import ProductPageClient from './ProductPageClient'
@@ -70,7 +71,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-8">
-        {/* Header with Cart and Back Link */}
+        {/* Header with Cart, Back Link, and Mobile Nav */}
         <div className="flex justify-between items-center mb-8">
           <Link 
             href="/products/" 
@@ -78,7 +79,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
           >
             ← Back to Products
           </Link>
-          <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
+          
+          {/* Cart + Mobile Navigation */}
+          <div className="flex items-center gap-4">
+            {/* Desktop Cart */}
+            <CartTrigger className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white" />
+            
+            {/* Mobile Cart */}
+            <CartTrigger className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3" />
+            
+            {/* Mobile Navigation */}
+            <MobileNav brandSettings={null} />
+          </div>
         </div>
 
         {/* Pass product to client component that handles all the interactive logic */}

@@ -1,6 +1,7 @@
 import { getProducts } from '@/lib/sanity'
 import CartButton from '@/components/CartButton'
 import CartTrigger from '@/components/CartTrigger'
+import MobileNav from '@/components/MobileNav'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
@@ -132,7 +133,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               <span className="text-gray-900 font-semibold text-lg">Wookporium</span>
             </Link>
 
-            {/* Navigation Links */}
+            {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
               <Link href="/collections/tops" className={`transition-colors font-medium ${category === 'tops' ? 'text-emerald-600' : 'text-gray-600 hover:text-gray-900'}`}>
                 Tops
@@ -160,8 +161,17 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               </Link>
             </div>
 
-            {/* Cart */}
-            <CartTrigger className="bg-gray-900 hover:bg-gray-800 text-white" />
+            {/* Mobile + Desktop Cart/Menu */}
+            <div className="flex items-center gap-4">
+              {/* Desktop Cart */}
+              <CartTrigger className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white" />
+              
+              {/* Mobile Cart */}
+              <CartTrigger className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3" />
+              
+              {/* Mobile Navigation */}
+              <MobileNav brandSettings={null} />
+            </div>
           </div>
         </div>
       </nav>
