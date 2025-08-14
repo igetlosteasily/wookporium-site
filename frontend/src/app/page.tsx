@@ -5,6 +5,7 @@ import CartTrigger from '@/components/CartTrigger'
 import DynamicLogo from '@/components/DynamicLogo'
 import FontProvider from '@/components/FontProvider'
 import ThemeProvider from '@/components/ThemeProvider'
+// import MobileNav from '@/components/MobileNav'
 
 interface Product {
   _id: string
@@ -24,6 +25,7 @@ interface BrandSettings {
   primaryColor?: string
   secondaryColor?: string
   backgroundColor?: string
+  sectionBackgroundColor?: string
   heroTitle?: string
   heroSubtitle?: string
   heroBackgroundImageUrl?: string
@@ -80,12 +82,15 @@ export default async function HomePage() {
   const primaryColor = brandSettings?.primaryColor || '#111827' // gray-900
   const secondaryColor = brandSettings?.secondaryColor || '#6b7280' // gray-500
   const backgroundColor = brandSettings?.backgroundColor || '#ffffff'
+  const sectionBackgroundColor = brandSettings?.sectionBackgroundColor || '#f8fafc'
 
   return (
     <ThemeProvider 
       themeStyle={brandSettings?.themeStyle}
       primaryColor={primaryColor}
       secondaryColor={secondaryColor}
+      backgroundColor={backgroundColor}
+      sectionBackgroundColor={sectionBackgroundColor}
     >
       <FontProvider 
         headerFont={brandSettings?.headerFont}
@@ -93,14 +98,14 @@ export default async function HomePage() {
         fontWeightStyle={brandSettings?.fontWeightStyle}
       >
         <div className="min-h-screen" style={{ backgroundColor }}>
-          {/* Navigation Bar */}
-          <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+          {/* Navigation Bar - Fixed transparency */}
+          <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
                 {/* Dynamic Logo */}
                 <DynamicLogo brandSettings={brandSettings} />
 
-                {/* Navigation Links */}
+                {/* Desktop Navigation Links */}
                 <div className="hidden md:flex items-center space-x-8" style={{ fontFamily: 'var(--font-body)', fontWeight: 'var(--font-weight-medium)' }}>
                   <Link href="/collections/tops" className="text-gray-600 hover:text-gray-900 transition-colors">
                     Tops
@@ -128,17 +133,35 @@ export default async function HomePage() {
                   </Link>
                 </div>
 
-                {/* Cart */}
-                <CartTrigger 
-                  className="text-white py-2 px-4 transition-all duration-300 themed-button"
-                  style={{ 
-                    backgroundColor: primaryColor,
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                    borderRadius: 'var(--theme-button-radius)',
-                    boxShadow: 'var(--theme-button-shadow)'
-                  }}
-                />
+                {/* Mobile + Desktop Cart/Menu */}
+                <div className="flex items-center gap-4">
+                  {/* Desktop Cart */}
+                  <CartTrigger 
+                    className="hidden md:block text-white py-2 px-4 transition-all duration-300 themed-button"
+                    style={{ 
+                      backgroundColor: primaryColor,
+                      fontFamily: 'var(--font-body)',
+                      fontWeight: 'var(--font-weight-semibold)',
+                      borderRadius: 'var(--theme-button-radius)',
+                      boxShadow: 'var(--theme-button-shadow)'
+                    }}
+                  />
+                  
+                  {/* Mobile Cart */}
+                  <CartTrigger 
+                    className="md:hidden text-white py-2 px-3 transition-all duration-300 themed-button"
+                    style={{ 
+                      backgroundColor: primaryColor,
+                      fontFamily: 'var(--font-body)',
+                      fontWeight: 'var(--font-weight-semibold)',
+                      borderRadius: 'var(--theme-button-radius)',
+                      boxShadow: 'var(--theme-button-shadow)'
+                    }}
+                  />
+                  
+                  {/* Mobile Navigation - Temporarily disabled */}
+                  {/* <MobileNav brandSettings={brandSettings} /> */}
+                </div>
               </div>
             </div>
           </nav>
@@ -305,7 +328,7 @@ export default async function HomePage() {
           {homepageContent?.values && homepageContent.values.length > 0 && (
             <section 
               className="py-16 px-4 themed-section"
-              style={{ background: 'var(--theme-sections-gradient)' }}
+              style={{ backgroundColor: sectionBackgroundColor }}
             >
               <div className="container mx-auto">
                 <h2 
