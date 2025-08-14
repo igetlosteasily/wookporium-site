@@ -44,7 +44,7 @@ interface Product {
   inventory?: number;
   tags?: string[];
   festivalAttribution?: string;
-  description?: any[];
+  description?: Array<{ _type: string; children?: Array<{ text: string }> }>;
   materials?: string[];
   careInstructions?: string;
   artistNotes?: string;

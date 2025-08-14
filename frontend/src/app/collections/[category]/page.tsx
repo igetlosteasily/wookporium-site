@@ -267,7 +267,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
             <div className="text-6xl mb-6">🔍</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">No {collection.title} Yet</h3>
             <p className="text-xl text-gray-600 mb-8">
-              We're working on adding amazing {collection.title.toLowerCase()} to our collection. Check back soon!
+              We&apos;re working on adding amazing {collection.title.toLowerCase()} to our collection. Check back soon!
             </p>
             <Link 
               href="/products/"

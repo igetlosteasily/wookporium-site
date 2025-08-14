@@ -1,5 +1,4 @@
 import { getProducts } from '@/lib/sanity'
-import CartButton from '@/components/CartButton'
 import CartTrigger from '@/components/CartTrigger'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -162,7 +161,7 @@ export default async function ProductsPage() {
             <div className="text-6xl mb-6">📦</div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">No Products Yet</h3>
             <p className="text-xl text-gray-600 mb-8">
-              Products will appear here once they're added to your Sanity CMS.
+              Products will appear here once they are added to your Sanity CMS.
             </p>
             <Link 
               href="/"

@@ -90,7 +90,7 @@ export default function AboutPage() {
               </p>
               <p>
                 Our journey began with a simple belief: festival-goers deserve clothing and accessories that are 
-                as authentic and spirited as they are. Whether you're dancing under desert stars or vibing at 
+                as authentic and spirited as they are. Whether you are dancing under desert stars or vibing at 
                 an EDM festival, our pieces are designed to move with you and reflect your unique energy.
               </p>
             </div>

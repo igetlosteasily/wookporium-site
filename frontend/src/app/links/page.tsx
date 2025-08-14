@@ -132,7 +132,7 @@ export default function LinksPage() {
             Useful Links
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Curated resources for festival-goers, music lovers, and the vibrant community we're all part of
+            Curated resources for festival-goers, music lovers, and the vibrant community we&apos;re all part of
           </p>
         </div>
 
