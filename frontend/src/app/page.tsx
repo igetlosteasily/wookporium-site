@@ -5,7 +5,7 @@ import CartTrigger from '@/components/CartTrigger'
 import DynamicLogo from '@/components/DynamicLogo'
 import FontProvider from '@/components/FontProvider'
 import ThemeProvider from '@/components/ThemeProvider'
-// import MobileNav from '@/components/MobileNav'
+import MobileNav from '@/components/MobileNav'
 
 interface Product {
   _id: string
@@ -98,37 +98,43 @@ export default async function HomePage() {
         fontWeightStyle={brandSettings?.fontWeightStyle}
       >
         <div className="min-h-screen" style={{ backgroundColor }}>
-          {/* Navigation Bar - Fixed transparency */}
-          <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+          {/* Navigation Bar - FORCED SOLID WHITE */}
+          <nav 
+            className="sticky top-0 z-50 border-b border-gray-200 shadow-sm"
+            style={{ 
+              backgroundColor: '#ffffff !important',
+              backdropFilter: 'none'
+            }}
+          >
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
                 {/* Dynamic Logo */}
                 <DynamicLogo brandSettings={brandSettings} />
 
-                {/* Desktop Navigation Links */}
-                <div className="hidden md:flex items-center space-x-8" style={{ fontFamily: 'var(--font-body)', fontWeight: 'var(--font-weight-medium)' }}>
-                  <Link href="/collections/tops" className="text-gray-600 hover:text-gray-900 transition-colors">
+                {/* Desktop Navigation Links - SIMPLIFIED */}
+                <div className="hidden md:flex items-center space-x-8">
+                  <Link href="/collections/tops" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Tops
                   </Link>
-                  <Link href="/collections/bottoms" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/collections/bottoms" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Bottoms
                   </Link>
-                  <Link href="/collections/outerwear" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/collections/outerwear" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Outerwear
                   </Link>
-                  <Link href="/collections/jewelry" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/collections/jewelry" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Jewelry
                   </Link>
-                  <Link href="/collections/apparel" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/collections/apparel" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Apparel
                   </Link>
-                  <Link href="/collections/knick-knacks" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/collections/knick-knacks" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Knick-knacks
                   </Link>
-                  <Link href="/links" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/links" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Links
                   </Link>
-                  <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  <Link href="/about" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     About Us
                   </Link>
                 </div>
@@ -137,30 +143,16 @@ export default async function HomePage() {
                 <div className="flex items-center gap-4">
                   {/* Desktop Cart */}
                   <CartTrigger 
-                    className="hidden md:block text-white py-2 px-4 transition-all duration-300 themed-button"
-                    style={{ 
-                      backgroundColor: primaryColor,
-                      fontFamily: 'var(--font-body)',
-                      fontWeight: 'var(--font-weight-semibold)',
-                      borderRadius: 'var(--theme-button-radius)',
-                      boxShadow: 'var(--theme-button-shadow)'
-                    }}
+                    className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white py-2 px-4 rounded-lg transition-all duration-300"
                   />
                   
                   {/* Mobile Cart */}
                   <CartTrigger 
-                    className="md:hidden text-white py-2 px-3 transition-all duration-300 themed-button"
-                    style={{ 
-                      backgroundColor: primaryColor,
-                      fontFamily: 'var(--font-body)',
-                      fontWeight: 'var(--font-weight-semibold)',
-                      borderRadius: 'var(--theme-button-radius)',
-                      boxShadow: 'var(--theme-button-shadow)'
-                    }}
+                    className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3 rounded-lg transition-all duration-300"
                   />
                   
-                  {/* Mobile Navigation - Temporarily disabled */}
-                  {/* <MobileNav brandSettings={brandSettings} /> */}
+                  {/* Mobile Navigation - ENABLED */}
+                  <MobileNav brandSettings={brandSettings} />
                 </div>
               </div>
             </div>
