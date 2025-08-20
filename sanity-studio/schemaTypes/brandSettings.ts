@@ -87,11 +87,38 @@ export default defineType({
       initialValue: 'Handcrafted festival apparel, natural jewelry, and unique accessories for your journey',
       description: 'Subtitle text below main headline'
     }),
+    
+    // NEW: Hero Images Carousel
+    defineField({
+      name: 'heroImages',
+      title: 'Hero Background Images (Carousel)',
+      type: 'array',
+      description: 'Multiple images that will rotate in the hero section. If empty, will use single background image below.',
+      of: [
+        {
+          type: 'image',
+          options: {
+            hotspot: true
+          },
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+              description: 'Describe this image for accessibility'
+            })
+          ]
+        }
+      ],
+      validation: Rule => Rule.max(6).warning('Consider using 6 or fewer images for better performance')
+    }),
+    
+    // UPDATED: Single background image (fallback)
     defineField({
       name: 'heroBackgroundImage',
-      title: 'Hero Background Image',
+      title: 'Hero Background Image (Single)',
       type: 'image',
-      description: 'Optional background image for hero section',
+      description: 'Single background image for hero section. Used if Hero Images Carousel is empty.',
       options: {
         hotspot: true
       }

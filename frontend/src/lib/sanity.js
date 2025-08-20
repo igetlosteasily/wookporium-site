@@ -59,7 +59,7 @@ export async function getProduct(slug) {
   }`, { slug })
 }
 
-// NEW: Brand Settings functions
+// Brand Settings functions with hero images
 export async function getBrandSettings() {
   return client.fetch(`*[_type == "brandSettings"][0] {
     "logoUrl": logo.asset->url,
@@ -72,6 +72,10 @@ export async function getBrandSettings() {
     heroTitle,
     heroSubtitle,
     "heroBackgroundImageUrl": heroBackgroundImage.asset->url,
+    "heroImages": heroImages[] {
+      "url": asset->url,
+      alt
+    },
     themeStyle,
     buttonStyle,
     headerFont,
@@ -81,13 +85,16 @@ export async function getBrandSettings() {
       _id,
       title,
       slug,
+      shortDescription,
       "mainImageUrl": mainImage.asset->url,
-      price
+      price,
+      tags,
+      festivalAttribution
     }
   }`)
 }
 
-// NEW: Homepage Content functions
+// Homepage content function
 export async function getHomepageContent() {
   return client.fetch(`*[_type == "homepageContent"][0] {
     valuesSectionTitle,
@@ -111,7 +118,58 @@ export async function getHomepageContent() {
   }`)
 }
 
-// Utility function to get complete homepage data
+// NEW: About page content function
+export async function getAboutPageContent() {
+  return client.fetch(`*[_type == "aboutPageContent"][0] {
+    pageTitle,
+    pageSubtitle,
+    storyTitle,
+    storyContent[] {
+      paragraph
+    },
+    values[] {
+      emoji,
+      title,
+      description
+    },
+    specialSectionTitle,
+    specialItems[] {
+      icon,
+      title,
+      description
+    },
+    ctaTitle,
+    ctaDescription,
+    primaryButtonText,
+    primaryButtonUrl,
+    secondaryButtonText,
+    secondaryButtonUrl
+  }`)
+}
+
+// NEW: Links page content function
+export async function getLinksPageContent() {
+  return client.fetch(`*[_type == "linksPageContent"][0] {
+    pageTitle,
+    pageDescription,
+    linkCategories[] {
+      title,
+      emoji,
+      links[] {
+        name,
+        url,
+        description
+      }
+    },
+    ctaTitle,
+    ctaDescription,
+    ctaButtonText,
+    ctaButtonUrl,
+    disclaimerText
+  }`)
+}
+
+// Complete homepage data with better featured products handling
 export async function getCompleteHomepageData() {
   const [brandSettings, homepageContent, products] = await Promise.all([
     getBrandSettings(),
@@ -119,10 +177,15 @@ export async function getCompleteHomepageData() {
     getProducts()
   ])
   
+  // Use featured products from brand settings if available, otherwise fallback to recent products
+  const featuredProducts = brandSettings?.featuredProducts && brandSettings.featuredProducts.length > 0
+    ? brandSettings.featuredProducts
+    : products.slice(0, 6) // First 6 as fallback featured
+  
   return {
     brandSettings,
     homepageContent,
-    featuredProducts: products.slice(0, 6), // First 6 as featured
+    featuredProducts,
     newArrivals: products.slice(0, 4) // First 4 as new arrivals
   }
 }

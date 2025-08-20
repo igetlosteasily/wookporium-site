@@ -6,6 +6,8 @@ import DynamicLogo from '@/components/DynamicLogo'
 import FontProvider from '@/components/FontProvider'
 import ThemeProvider from '@/components/ThemeProvider'
 import MobileNav from '@/components/MobileNav'
+import FeaturedProducts from '@/components/FeaturedProducts'
+import HeroCarousel from '@/components/HeroCarousel'
 
 interface Product {
   _id: string
@@ -29,6 +31,7 @@ interface BrandSettings {
   heroTitle?: string
   heroSubtitle?: string
   heroBackgroundImageUrl?: string
+  heroImages?: Array<{ url: string; alt?: string }>
   themeStyle?: string
   buttonStyle?: string
   headerFont?: string
@@ -68,7 +71,7 @@ interface CompleteHomepageData {
 export default async function HomePage() {
   // Get all homepage data from CMS
   const data: CompleteHomepageData = await getCompleteHomepageData()
-  const { brandSettings, homepageContent, newArrivals } = data
+  const { brandSettings, homepageContent, featuredProducts, newArrivals } = data
 
   // Fallback values
   const heroTitle = brandSettings?.heroTitle || 'Wookporium'
@@ -84,6 +87,11 @@ export default async function HomePage() {
   const backgroundColor = brandSettings?.backgroundColor || '#ffffff'
   const sectionBackgroundColor = brandSettings?.sectionBackgroundColor || '#f8fafc'
 
+  // Prepare hero images for carousel
+  const heroImages = brandSettings?.heroImages && brandSettings.heroImages.length > 0
+    ? brandSettings.heroImages.map(img => img.url)
+    : []
+
   return (
     <ThemeProvider 
       themeStyle={brandSettings?.themeStyle}
@@ -98,12 +106,12 @@ export default async function HomePage() {
         fontWeightStyle={brandSettings?.fontWeightStyle}
       >
         <div className="min-h-screen" style={{ backgroundColor }}>
-          {/* Navigation Bar - FORCED SOLID WHITE */}
+          {/* Navigation Bar - THEME RESPONSIVE */}
           <nav 
             className="sticky top-0 z-50 border-b border-gray-200 shadow-sm"
             style={{ 
-              backgroundColor: '#ffffff !important',
-              backdropFilter: 'none'
+              backgroundColor: backgroundColor,
+              backdropFilter: 'blur(10px)'
             }}
           >
             <div className="container mx-auto px-4">
@@ -111,7 +119,7 @@ export default async function HomePage() {
                 {/* Dynamic Logo */}
                 <DynamicLogo brandSettings={brandSettings} />
 
-                {/* Desktop Navigation Links - SIMPLIFIED */}
+                {/* Desktop Navigation Links */}
                 <div className="hidden md:flex items-center space-x-8">
                   <Link href="/collections/tops" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
                     Tops
@@ -143,48 +151,54 @@ export default async function HomePage() {
                 <div className="flex items-center gap-4">
                   {/* Desktop Cart */}
                   <CartTrigger 
-                    className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white py-2 px-4 rounded-lg transition-all duration-300"
+                    className="hidden md:block py-2 px-4 rounded-lg transition-all duration-300"
+                    style={{ 
+                      backgroundColor: primaryColor,
+                      color: '#ffffff'
+                    }}
                   />
                   
                   {/* Mobile Cart */}
                   <CartTrigger 
-                    className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3 rounded-lg transition-all duration-300"
+                    className="md:hidden py-2 px-3 rounded-lg transition-all duration-300"
+                    style={{ 
+                      backgroundColor: primaryColor,
+                      color: '#ffffff'
+                    }}
                   />
                   
-                  {/* Mobile Navigation - ENABLED */}
+                  {/* Mobile Navigation */}
                   <MobileNav brandSettings={brandSettings} />
                 </div>
               </div>
             </div>
           </nav>
 
-          {/* Hero Section */}
-          <section 
-            className="relative py-20 px-4 themed-hero"
-            style={{
-              background: brandSettings?.heroBackgroundImageUrl 
-                ? `url(${brandSettings.heroBackgroundImageUrl})` 
-                : 'var(--theme-hero-gradient)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
+          {/* Hero Section with Carousel */}
+          <HeroCarousel
+            images={heroImages}
+            fallbackImage={brandSettings?.heroBackgroundImageUrl}
+            autoAdvance={true}
+            intervalMs={5000}
+            className="themed-hero"
           >
             <div className="container mx-auto text-center">
               <h1 
-                className="text-6xl md:text-7xl mb-6 themed-heading"
+                className="text-6xl md:text-7xl mb-6 themed-heading text-white"
                 style={{ 
-                  color: primaryColor,
                   fontFamily: 'var(--font-header)',
-                  fontWeight: 'var(--font-weight-bold)'
+                  fontWeight: 'var(--font-weight-bold)',
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 {heroTitle}
               </h1>
               <p 
-                className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed"
+                className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed"
                 style={{ 
                   fontFamily: 'var(--font-body)',
-                  fontWeight: 'var(--font-weight-normal)'
+                  fontWeight: 'var(--font-weight-normal)',
+                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
                 }}
               >
                 {heroSubtitle}
@@ -206,9 +220,9 @@ export default async function HomePage() {
                 </Link>
                 <Link 
                   href={secondaryButtonUrl}
-                  className="border-2 text-gray-700 hover:bg-gray-50 py-4 px-8 transition-all themed-button-secondary"
+                  className="border-2 text-white hover:bg-white/10 py-4 px-8 transition-all themed-button-secondary"
                   style={{ 
-                    borderColor: secondaryColor,
+                    borderColor: '#ffffff',
                     fontFamily: 'var(--font-body)',
                     fontWeight: 'var(--font-weight-semibold)',
                     borderRadius: 'var(--theme-button-radius)',
@@ -219,11 +233,21 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
-          </section>
+          </HeroCarousel>
+
+          {/* Featured Products Section */}
+          {featuredProducts.length > 0 && (
+            <FeaturedProducts
+              products={featuredProducts}
+              title="Featured Products"
+              primaryColor={primaryColor}
+              secondaryColor={secondaryColor}
+            />
+          )}
 
           {/* New Arrivals Section */}
           {newArrivals.length > 0 && (
-            <section className="py-16 px-4">
+            <section className="py-16 px-4" style={{ backgroundColor }}>
               <div className="container mx-auto">
                 <div className="flex items-center justify-between mb-12">
                   <h2 

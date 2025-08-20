@@ -23,16 +23,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
       cards: 'rgba(255, 255, 255, 0.8)',
       accent: 'rgba(0, 0, 0, 0.05)'
-    },
-    shadows: {
-      card: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      cardHover: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      button: '0 2px 4px rgba(0, 0, 0, 0.1)'
-    },
-    borders: {
-      radius: '8px',
-      cardRadius: '12px',
-      buttonRadius: '8px'
     }
   },
   festival: {
@@ -45,16 +35,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       cards: 'rgba(255, 255, 255, 0.95)',
       accent: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
-    },
-    shadows: {
-      card: '0 8px 32px rgba(0, 0, 0, 0.15)',
-      cardHover: '0 16px 48px rgba(0, 0, 0, 0.2)',
-      button: '0 4px 16px rgba(0, 0, 0, 0.2)'
-    },
-    borders: {
-      radius: '16px',
-      cardRadius: '20px',
-      buttonRadius: '12px'
     }
   },
   bohemian: {
@@ -67,16 +47,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #ddbea9 0%, #cb997e 100%)',
       cards: 'rgba(245, 235, 220, 0.9)',
       accent: 'linear-gradient(135deg, #a8dadc 0%, #457b9d 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(139, 69, 19, 0.1)',
-      cardHover: '0 8px 24px rgba(139, 69, 19, 0.15)',
-      button: '0 3px 12px rgba(139, 69, 19, 0.15)'
-    },
-    borders: {
-      radius: '12px',
-      cardRadius: '16px',
-      buttonRadius: '20px'
     }
   },
   desert: {
@@ -89,16 +59,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #ffab91 0%, #ff7043 100%)',
       cards: 'rgba(255, 248, 225, 0.95)',
       accent: 'linear-gradient(135deg, #ff9800 0%, #e65100 100%)'
-    },
-    shadows: {
-      card: '0 6px 20px rgba(255, 87, 34, 0.2)',
-      cardHover: '0 12px 32px rgba(255, 87, 34, 0.3)',
-      button: '0 4px 16px rgba(255, 87, 34, 0.25)'
-    },
-    borders: {
-      radius: '8px',
-      cardRadius: '12px',
-      buttonRadius: '24px'
     }
   },
   dark: {
@@ -111,16 +71,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #334155 0%, #475569 100%)',
       cards: 'rgba(30, 41, 59, 0.8)',
       accent: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(0, 0, 0, 0.3)',
-      cardHover: '0 8px 24px rgba(0, 0, 0, 0.4)',
-      button: '0 3px 12px rgba(0, 0, 0, 0.3)'
-    },
-    borders: {
-      radius: '8px',
-      cardRadius: '12px',
-      buttonRadius: '8px'
     }
   },
   sunset: {
@@ -133,16 +83,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #fbb6ce 0%, #f687b3 100%)',
       cards: 'rgba(255, 245, 245, 0.9)',
       accent: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(245, 101, 101, 0.15)',
-      cardHover: '0 8px 24px rgba(245, 101, 101, 0.25)',
-      button: '0 3px 12px rgba(245, 101, 101, 0.2)'
-    },
-    borders: {
-      radius: '16px',
-      cardRadius: '20px',
-      buttonRadius: '25px'
     }
   },
   forest: {
@@ -155,16 +95,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #9ae6b4 0%, #68d391 100%)',
       cards: 'rgba(240, 255, 244, 0.9)',
       accent: 'linear-gradient(135deg, #38a169 0%, #2f855a 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(56, 161, 105, 0.15)',
-      cardHover: '0 8px 24px rgba(56, 161, 105, 0.25)',
-      button: '0 3px 12px rgba(56, 161, 105, 0.2)'
-    },
-    borders: {
-      radius: '12px',
-      cardRadius: '16px',
-      buttonRadius: '12px'
     }
   },
   ocean: {
@@ -177,16 +107,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%)',
       cards: 'rgba(240, 249, 255, 0.9)',
       accent: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(14, 165, 233, 0.15)',
-      cardHover: '0 8px 24px rgba(14, 165, 233, 0.25)',
-      button: '0 3px 12px rgba(14, 165, 233, 0.2)'
-    },
-    borders: {
-      radius: '8px',
-      cardRadius: '12px',
-      buttonRadius: '8px'
     }
   },
   custom: {
@@ -199,16 +119,6 @@ const themeConfigs = {
       sections: 'linear-gradient(135deg, var(--brand-section-background) 0%, var(--brand-background) 100%)',
       cards: 'rgba(255, 255, 255, 0.8)',
       accent: 'linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%)'
-    },
-    shadows: {
-      card: '0 4px 16px rgba(0, 0, 0, 0.1)',
-      cardHover: '0 8px 24px rgba(0, 0, 0, 0.15)',
-      button: '0 3px 12px rgba(0, 0, 0, 0.15)'
-    },
-    borders: {
-      radius: '8px',
-      cardRadius: '12px',
-      buttonRadius: '8px'
     }
   }
 }
@@ -239,11 +149,13 @@ export default function ThemeProvider({
     const finalBackgroundColor = themeStyle === 'custom' ? backgroundColor : theme.backgroundColor
     const finalSectionBackgroundColor = themeStyle === 'custom' ? sectionBackgroundColor : theme.sectionBackgroundColor
     
-    // Background colors
+    // FIXED: Apply background colors to both CSS variables AND body element
     root.style.setProperty('--brand-background', finalBackgroundColor)
     root.style.setProperty('--brand-section-background', finalSectionBackgroundColor)
+    root.style.setProperty('--theme-background', finalBackgroundColor)
+    root.style.setProperty('--theme-section-background', finalSectionBackgroundColor)
     
-    // Also set on body for immediate visual feedback
+    // Apply to body for immediate visual feedback
     document.body.style.backgroundColor = finalBackgroundColor
     
     // Theme-specific gradients and effects
@@ -251,16 +163,6 @@ export default function ThemeProvider({
     root.style.setProperty('--theme-sections-gradient', theme.gradients.sections)
     root.style.setProperty('--theme-card-background', theme.gradients.cards)
     root.style.setProperty('--theme-accent-gradient', theme.gradients.accent)
-    
-    // Theme-specific shadows
-    root.style.setProperty('--theme-card-shadow', theme.shadows.card)
-    root.style.setProperty('--theme-card-shadow-hover', theme.shadows.cardHover)
-    root.style.setProperty('--theme-button-shadow', theme.shadows.button)
-    
-    // Theme-specific border radius
-    root.style.setProperty('--theme-radius', theme.borders.radius)
-    root.style.setProperty('--theme-card-radius', theme.borders.cardRadius)
-    root.style.setProperty('--theme-button-radius', theme.borders.buttonRadius)
     
     // Brand colors (these can override theme defaults)
     root.style.setProperty('--brand-primary', primaryColor)
@@ -271,18 +173,30 @@ export default function ThemeProvider({
       case 'festival':
         root.style.setProperty('--theme-animation-speed', '0.4s')
         root.style.setProperty('--theme-scale-hover', '1.08')
+        root.style.setProperty('--theme-radius', '16px')
+        root.style.setProperty('--theme-card-radius', '20px')
+        root.style.setProperty('--theme-button-radius', '12px')
         break
       case 'bohemian':
         root.style.setProperty('--theme-animation-speed', '0.6s')
         root.style.setProperty('--theme-scale-hover', '1.03')
+        root.style.setProperty('--theme-radius', '12px')
+        root.style.setProperty('--theme-card-radius', '16px')
+        root.style.setProperty('--theme-button-radius', '20px')
         break
       case 'desert':
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.05')
+        root.style.setProperty('--theme-radius', '8px')
+        root.style.setProperty('--theme-card-radius', '12px')
+        root.style.setProperty('--theme-button-radius', '24px')
         break
       case 'dark':
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.02')
+        root.style.setProperty('--theme-radius', '8px')
+        root.style.setProperty('--theme-card-radius', '12px')
+        root.style.setProperty('--theme-button-radius', '8px')
         // Update text colors for dark theme
         root.style.setProperty('--theme-text-primary', '#f1f5f9')
         root.style.setProperty('--theme-text-secondary', '#cbd5e1')
@@ -292,10 +206,16 @@ export default function ThemeProvider({
       case 'ocean':
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.03')
+        root.style.setProperty('--theme-radius', '12px')
+        root.style.setProperty('--theme-card-radius', '16px')
+        root.style.setProperty('--theme-button-radius', '16px')
         break
       default: // minimal, custom
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.02')
+        root.style.setProperty('--theme-radius', '8px')
+        root.style.setProperty('--theme-card-radius', '12px')
+        root.style.setProperty('--theme-button-radius', '8px')
     }
     
   }, [themeStyle, primaryColor, secondaryColor, backgroundColor, sectionBackgroundColor])
