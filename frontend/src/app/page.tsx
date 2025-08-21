@@ -82,8 +82,8 @@ export default async function HomePage() {
   const secondaryButtonUrl = homepageContent?.secondaryButtonUrl || '/collections/jewelry'
 
   // Dynamic styling
-  const primaryColor = brandSettings?.primaryColor || '#111827' // gray-900
-  const secondaryColor = brandSettings?.secondaryColor || '#6b7280' // gray-500
+  const primaryColor = brandSettings?.primaryColor || '#111827'
+  const secondaryColor = brandSettings?.secondaryColor || '#6b7280'
   const backgroundColor = brandSettings?.backgroundColor || '#ffffff'
   const sectionBackgroundColor = brandSettings?.sectionBackgroundColor || '#f8fafc'
 
@@ -105,15 +105,10 @@ export default async function HomePage() {
         bodyFont={brandSettings?.bodyFont}
         fontWeightStyle={brandSettings?.fontWeightStyle}
       >
-        <div className="min-h-screen" style={{ backgroundColor }}>
+        {/* FIXED: Remove inline backgroundColor styles, let theme system handle it */}
+        <div className="min-h-screen themed-page">
           {/* Navigation Bar - THEME RESPONSIVE */}
-          <nav 
-            className="sticky top-0 z-50 border-b border-gray-200 shadow-sm"
-            style={{ 
-              backgroundColor: backgroundColor,
-              backdropFilter: 'blur(10px)'
-            }}
-          >
+          <nav className="sticky top-0 z-50 border-b border-gray-200 shadow-sm themed-nav">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
                 {/* Dynamic Logo */}
@@ -121,28 +116,28 @@ export default async function HomePage() {
 
                 {/* Desktop Navigation Links */}
                 <div className="hidden md:flex items-center space-x-8">
-                  <Link href="/collections/tops" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/tops" className="themed-nav-link">
                     Tops
                   </Link>
-                  <Link href="/collections/bottoms" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/bottoms" className="themed-nav-link">
                     Bottoms
                   </Link>
-                  <Link href="/collections/outerwear" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/outerwear" className="themed-nav-link">
                     Outerwear
                   </Link>
-                  <Link href="/collections/jewelry" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/jewelry" className="themed-nav-link">
                     Jewelry
                   </Link>
-                  <Link href="/collections/apparel" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/apparel" className="themed-nav-link">
                     Apparel
                   </Link>
-                  <Link href="/collections/knick-knacks" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/collections/knick-knacks" className="themed-nav-link">
                     Knick-knacks
                   </Link>
-                  <Link href="/links" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/links" className="themed-nav-link">
                     Links
                   </Link>
-                  <Link href="/about" className="text-gray-900 hover:text-gray-600 transition-colors font-medium">
+                  <Link href="/about" className="themed-nav-link">
                     About Us
                   </Link>
                 </div>
@@ -151,7 +146,7 @@ export default async function HomePage() {
                 <div className="flex items-center gap-4">
                   {/* Desktop Cart */}
                   <CartTrigger 
-                    className="hidden md:block py-2 px-4 rounded-lg transition-all duration-300"
+                    className="hidden md:block themed-button-primary"
                     style={{ 
                       backgroundColor: primaryColor,
                       color: '#ffffff'
@@ -160,7 +155,7 @@ export default async function HomePage() {
                   
                   {/* Mobile Cart */}
                   <CartTrigger 
-                    className="md:hidden py-2 px-3 rounded-lg transition-all duration-300"
+                    className="md:hidden themed-button-primary"
                     style={{ 
                       backgroundColor: primaryColor,
                       color: '#ffffff'
@@ -241,17 +236,16 @@ export default async function HomePage() {
               products={featuredProducts}
               title="Featured Products"
               primaryColor={primaryColor}
-              secondaryColor={secondaryColor}
             />
           )}
 
-          {/* New Arrivals Section */}
+          {/* New Arrivals Section - FIXED: Use themed class instead of inline background */}
           {newArrivals.length > 0 && (
-            <section className="py-16 px-4" style={{ backgroundColor }}>
+            <section className="py-16 px-4 themed-section">
               <div className="container mx-auto">
                 <div className="flex items-center justify-between mb-12">
                   <h2 
-                    className="text-4xl"
+                    className="text-4xl themed-heading"
                     style={{ 
                       color: primaryColor,
                       fontFamily: 'var(--font-header)',
@@ -262,7 +256,7 @@ export default async function HomePage() {
                   </h2>
                   <Link 
                     href="/products/" 
-                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                    className="themed-nav-link"
                     style={{ 
                       fontFamily: 'var(--font-body)',
                       fontWeight: 'var(--font-weight-medium)'
@@ -277,12 +271,6 @@ export default async function HomePage() {
                     <div
                       key={product._id}
                       className="overflow-hidden transition-all themed-card"
-                      style={{
-                        background: 'var(--theme-card-background)',
-                        borderRadius: 'var(--theme-card-radius)',
-                        boxShadow: 'var(--theme-card-shadow)',
-                        transitionDuration: 'var(--theme-animation-speed)'
-                      }}
                     >
                       {product.mainImageUrl && (
                         <Link href={`/products/${product.slug.current}/`} className="aspect-square overflow-hidden block relative">
@@ -299,7 +287,7 @@ export default async function HomePage() {
                       <div className="p-4">
                         <Link href={`/products/${product.slug.current}/`}>
                           <h3 
-                            className="text-lg text-gray-900 mb-2 hover:text-gray-700 transition-colors cursor-pointer line-clamp-2"
+                            className="text-lg themed-text-primary mb-2 hover:opacity-80 transition-colors cursor-pointer line-clamp-2"
                             style={{ 
                               fontFamily: 'var(--font-body)',
                               fontWeight: 'var(--font-weight-semibold)'
@@ -310,7 +298,7 @@ export default async function HomePage() {
                         </Link>
                         <div className="flex items-center justify-between">
                           <span 
-                            className="text-xl"
+                            className="text-xl themed-text-primary"
                             style={{ 
                               color: primaryColor,
                               fontFamily: 'var(--font-body)',
@@ -321,7 +309,7 @@ export default async function HomePage() {
                           </span>
                           {product.festivalAttribution && (
                             <span 
-                              className="text-xs text-gray-500 bg-gray-100 px-2 py-1"
+                              className="text-xs themed-text-secondary px-2 py-1 themed-badge"
                               style={{ 
                                 fontFamily: 'var(--font-body)',
                                 fontWeight: 'var(--font-weight-normal)',
@@ -340,15 +328,12 @@ export default async function HomePage() {
             </section>
           )}
 
-          {/* Values Section - Dynamic CMS Content */}
+          {/* Values Section - FIXED: Use themed classes */}
           {homepageContent?.values && homepageContent.values.length > 0 && (
-            <section 
-              className="py-16 px-4 themed-section"
-              style={{ backgroundColor: sectionBackgroundColor }}
-            >
+            <section className="py-16 px-4 themed-section-alt">
               <div className="container mx-auto">
                 <h2 
-                  className="text-4xl text-center mb-12"
+                  className="text-4xl text-center mb-12 themed-heading"
                   style={{ 
                     color: primaryColor,
                     fontFamily: 'var(--font-header)',
@@ -363,16 +348,10 @@ export default async function HomePage() {
                     <div 
                       key={index} 
                       className="p-6 text-center transition-all themed-card"
-                      style={{
-                        background: 'var(--theme-card-background)',
-                        borderRadius: 'var(--theme-card-radius)',
-                        boxShadow: 'var(--theme-card-shadow)',
-                        transitionDuration: 'var(--theme-animation-speed)'
-                      }}
                     >
                       <div className="text-4xl mb-4">{value.emoji}</div>
                       <h3 
-                        className="text-xl mb-3"
+                        className="text-xl mb-3 themed-heading"
                         style={{ 
                           color: primaryColor,
                           fontFamily: 'var(--font-header)',
@@ -382,7 +361,7 @@ export default async function HomePage() {
                         {value.title}
                       </h3>
                       <p 
-                        className="text-gray-600"
+                        className="themed-text-secondary"
                         style={{ 
                           fontFamily: 'var(--font-body)',
                           fontWeight: 'var(--font-weight-normal)'
@@ -397,12 +376,12 @@ export default async function HomePage() {
             </section>
           )}
 
-          {/* Featured Collections - Dynamic CMS Content */}
+          {/* Featured Collections - FIXED: Use themed classes */}
           {homepageContent?.collections && homepageContent.collections.length > 0 && (
-            <section className="py-16 px-4" style={{ backgroundColor }}>
+            <section className="py-16 px-4 themed-section">
               <div className="container mx-auto">
                 <h2 
-                  className="text-4xl text-center mb-12"
+                  className="text-4xl text-center mb-12 themed-heading"
                   style={{ 
                     color: primaryColor,
                     fontFamily: 'var(--font-header)',
@@ -415,18 +394,10 @@ export default async function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {homepageContent.collections.map((collection, index) => (
                     <Link key={index} href={collection.linkUrl} className="group">
-                      <div 
-                        className="p-8 text-center transition-all border themed-collection-card"
-                        style={{ 
-                          background: 'var(--theme-accent-gradient)',
-                          borderRadius: 'var(--theme-card-radius)',
-                          borderColor: `${primaryColor}30`,
-                          transitionDuration: 'var(--theme-animation-speed)'
-                        }}
-                      >
+                      <div className="p-8 text-center transition-all border themed-collection-card">
                         <div className="text-4xl mb-4">{collection.emoji}</div>
                         <h3 
-                          className="text-2xl mb-3"
+                          className="text-2xl mb-3 themed-heading"
                           style={{ 
                             color: primaryColor,
                             fontFamily: 'var(--font-header)',
@@ -436,7 +407,7 @@ export default async function HomePage() {
                           {collection.title}
                         </h3>
                         <p 
-                          className="text-gray-600 mb-4"
+                          className="themed-text-secondary mb-4"
                           style={{ 
                             fontFamily: 'var(--font-body)',
                             fontWeight: 'var(--font-weight-normal)'
@@ -445,7 +416,7 @@ export default async function HomePage() {
                           {collection.description}
                         </p>
                         <span 
-                          className="group-hover:opacity-80 transition-opacity"
+                          className="group-hover:opacity-80 transition-opacity themed-text-accent"
                           style={{ 
                             color: secondaryColor,
                             fontFamily: 'var(--font-body)',

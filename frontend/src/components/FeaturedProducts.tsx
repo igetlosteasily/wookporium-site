@@ -17,14 +17,12 @@ interface FeaturedProductsProps {
   products: Product[]
   title?: string
   primaryColor?: string
-  secondaryColor?: string
 }
 
 export default function FeaturedProducts({ 
   products, 
   title = "Featured Products",
   primaryColor = '#111827',
-  secondaryColor = '#6b7280'
 }: FeaturedProductsProps) {
   
   if (!products || products.length === 0) {

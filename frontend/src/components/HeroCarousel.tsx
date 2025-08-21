@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 
 interface HeroImage {
@@ -50,6 +50,18 @@ export default function HeroCarousel({
     setMounted(true)
   }, [])
 
+  const goToSlide = useCallback((index: number) => {
+    setCurrentIndex(index)
+  }, [])
+
+  const goToPrevious = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length)
+  }, [allImages.length])
+
+  const goToNext = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % allImages.length)
+  }, [allImages.length])
+
   // Auto-advance functionality
   useEffect(() => {
     if (!hasMultipleImages || !autoAdvance || isHovered || !mounted) return
@@ -60,18 +72,6 @@ export default function HeroCarousel({
 
     return () => clearInterval(interval)
   }, [hasMultipleImages, autoAdvance, isHovered, intervalMs, allImages.length, mounted])
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index)
-  }
-
-  const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + allImages.length) % allImages.length)
-  }
-
-  const goToNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % allImages.length)
-  }
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function HeroCarousel({
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [hasMultipleImages])
+  }, [hasMultipleImages, goToPrevious, goToNext])
 
   if (allImages.length === 0) {
     // No images available, render content with default background
