@@ -168,14 +168,27 @@ export default function ThemeProvider({
     root.style.setProperty('--brand-primary', primaryColor)
     root.style.setProperty('--brand-secondary', secondaryColor)
     
-    // Theme-specific behavior adjustments
+    // Theme-specific behavior adjustments with proper text colors
     switch (themeStyle) {
+      case 'minimal':
+        root.style.setProperty('--theme-animation-speed', '0.3s')
+        root.style.setProperty('--theme-scale-hover', '1.02')
+        root.style.setProperty('--theme-radius', '8px')
+        root.style.setProperty('--theme-card-radius', '12px')
+        root.style.setProperty('--theme-button-radius', '8px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
+        break
       case 'festival':
         root.style.setProperty('--theme-animation-speed', '0.4s')
         root.style.setProperty('--theme-scale-hover', '1.08')
         root.style.setProperty('--theme-radius', '16px')
         root.style.setProperty('--theme-card-radius', '20px')
         root.style.setProperty('--theme-button-radius', '12px')
+        // Light text for dark background
+        root.style.setProperty('--theme-text-primary', '#f1f5f9')
+        root.style.setProperty('--theme-text-secondary', '#cbd5e1')
         break
       case 'bohemian':
         root.style.setProperty('--theme-animation-speed', '0.6s')
@@ -183,6 +196,9 @@ export default function ThemeProvider({
         root.style.setProperty('--theme-radius', '12px')
         root.style.setProperty('--theme-card-radius', '16px')
         root.style.setProperty('--theme-button-radius', '20px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
         break
       case 'desert':
         root.style.setProperty('--theme-animation-speed', '0.3s')
@@ -190,6 +206,9 @@ export default function ThemeProvider({
         root.style.setProperty('--theme-radius', '8px')
         root.style.setProperty('--theme-card-radius', '12px')
         root.style.setProperty('--theme-button-radius', '24px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
         break
       case 'dark':
         root.style.setProperty('--theme-animation-speed', '0.3s')
@@ -197,25 +216,50 @@ export default function ThemeProvider({
         root.style.setProperty('--theme-radius', '8px')
         root.style.setProperty('--theme-card-radius', '12px')
         root.style.setProperty('--theme-button-radius', '8px')
-        // Update text colors for dark theme
+        // Light text for dark background
         root.style.setProperty('--theme-text-primary', '#f1f5f9')
         root.style.setProperty('--theme-text-secondary', '#cbd5e1')
         break
       case 'sunset':
+        root.style.setProperty('--theme-animation-speed', '0.3s')
+        root.style.setProperty('--theme-scale-hover', '1.03')
+        root.style.setProperty('--theme-radius', '12px')
+        root.style.setProperty('--theme-card-radius', '16px')
+        root.style.setProperty('--theme-button-radius', '16px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
+        break
       case 'forest':
+        root.style.setProperty('--theme-animation-speed', '0.3s')
+        root.style.setProperty('--theme-scale-hover', '1.03')
+        root.style.setProperty('--theme-radius', '12px')
+        root.style.setProperty('--theme-card-radius', '16px')
+        root.style.setProperty('--theme-button-radius', '16px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
+        break
       case 'ocean':
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.03')
         root.style.setProperty('--theme-radius', '12px')
         root.style.setProperty('--theme-card-radius', '16px')
         root.style.setProperty('--theme-button-radius', '16px')
+        // Dark text for light background
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
         break
-      default: // minimal, custom
+      case 'custom':
         root.style.setProperty('--theme-animation-speed', '0.3s')
         root.style.setProperty('--theme-scale-hover', '1.02')
         root.style.setProperty('--theme-radius', '8px')
         root.style.setProperty('--theme-card-radius', '12px')
         root.style.setProperty('--theme-button-radius', '8px')
+        // Dark text for light background (default, can be customized later)
+        root.style.setProperty('--theme-text-primary', '#111827')
+        root.style.setProperty('--theme-text-secondary', '#6b7280')
+        break
     }
     
   }, [themeStyle, primaryColor, secondaryColor, backgroundColor, sectionBackgroundColor])
