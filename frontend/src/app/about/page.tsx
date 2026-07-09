@@ -12,6 +12,7 @@ import ProductCard from '@/components/ProductCard'
 import { notFound } from 'next/navigation'
 import ParallaxSection from '@/components/ParallaxSection'
 import FounderSignature from '@/components/FounderSignature'
+import MotionReveal from '@/components/MotionReveal'
 
 /**
  * Generate SEO metadata
@@ -73,7 +74,7 @@ export default async function AboutPage() {
         height="min-h-[50vh] md:min-h-[60vh]"
         overlayOpacity={0.4}
       >
-        <div className="max-w-4xl mx-auto text-center">
+        <MotionReveal className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-serif drop-shadow-xl">
             {aboutPage.heroHeading}
           </h1>
@@ -82,7 +83,7 @@ export default async function AboutPage() {
               {aboutPage.heroSubheading}
             </p>
           )}
-        </div>
+        </MotionReveal>
       </ParallaxSection>
 
       {/* Story Section */}
@@ -91,7 +92,7 @@ export default async function AboutPage() {
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               {/* Story Content */}
-              <div className="order-2 md:order-1">
+              <MotionReveal className="order-2 md:order-1">
                 <h2 className="text-3xl md:text-4xl font-bold text-accent-dark mb-6 font-serif">
                   {aboutPage.storyHeading}
                 </h2>
@@ -100,11 +101,11 @@ export default async function AboutPage() {
                   className="text-lg text-cream leading-relaxed"
                 />
                 <FounderSignature />
-              </div>
+              </MotionReveal>
 
               {/* Story Image */}
               {aboutPage.storyImage?.asset?.url && (
-                <div className="order-1 md:order-2">
+                <MotionReveal delay={0.15} className="order-1 md:order-2">
                   <div className="relative aspect-square rounded-2xl overflow-hidden shadow-xl">
                     <Image
                       src={aboutPage.storyImage.asset.url}
@@ -114,7 +115,7 @@ export default async function AboutPage() {
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
-                </div>
+                </MotionReveal>
               )}
             </div>
           </div>
@@ -126,14 +127,16 @@ export default async function AboutPage() {
         <section className="py-16 md:py-24 bg-primary/5">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-accent-dark text-center mb-12 font-serif">
-                {aboutPage.missionHeading}
-              </h2>
+              <MotionReveal>
+                <h2 className="text-3xl md:text-4xl font-bold text-accent-dark text-center mb-12 font-serif">
+                  {aboutPage.missionHeading}
+                </h2>
+              </MotionReveal>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {aboutPage.missionPoints.map((point, index) => (
+                  <MotionReveal key={index} delay={(index % 3) * 0.15}>
                   <div
-                    key={index}
                     className="bg-white/60 backdrop-blur-md shadow-lg border border-white/40 rounded-xl p-8 hover:transform hover:scale-105 transition-all duration-300"
                   >
                     {point.icon && (
@@ -148,6 +151,7 @@ export default async function AboutPage() {
                       {point.description}
                     </p>
                   </div>
+                  </MotionReveal>
                 ))}
               </div>
             </div>
@@ -159,7 +163,7 @@ export default async function AboutPage() {
       {(aboutPage.processContent || (aboutPage.processImages && aboutPage.processImages.length > 0)) && (
         <section className="py-16 md:py-24 bg-warm-white">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
+            <MotionReveal className="max-w-6xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold text-accent-dark text-center mb-12 font-serif">
                 {aboutPage.processHeading}
               </h2>
@@ -224,7 +228,7 @@ export default async function AboutPage() {
                   )}
                 </div>
               )}
-            </div>
+            </MotionReveal>
           </div>
         </section>
       )}
@@ -235,18 +239,20 @@ export default async function AboutPage() {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
+          <MotionReveal className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-accent-dark mb-4">
               Marina's Current Rotation
             </h2>
             <p className="text-cream/90 max-w-2xl mx-auto">
               The pieces I'm currently wearing to every show. Hand-picked and road-tested for maximum vibe.
             </p>
-          </div>
+          </MotionReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {products.slice(0, 3).map((product) => (
-              <ProductCard key={product._id} product={product} />
+            {products.slice(0, 3).map((product, index) => (
+              <MotionReveal key={product._id} delay={index * 0.15}>
+                <ProductCard product={product} />
+              </MotionReveal>
             ))}
           </div>
 
@@ -261,7 +267,7 @@ export default async function AboutPage() {
       {/* Contact Section */}
       <section className="py-16 md:py-24 bg-gradient-to-br from-terracotta/10 to-sage/10">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
+          <MotionReveal className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-accent-dark mb-6 font-serif">
               {aboutPage.contactHeading}
             </h2>
@@ -326,7 +332,7 @@ export default async function AboutPage() {
             >
               Shop Our Collection
             </Link>
-          </div>
+          </MotionReveal>
         </div>
       </section>
     </main>

@@ -5,6 +5,7 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import MotionReveal from '@/components/MotionReveal'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -23,26 +24,29 @@ export default function PrivacyPage() {
             ← Back to Home
           </Link>
           
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
-            Privacy Policy
-          </h1>
+          <MotionReveal>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
+              Privacy Policy
+            </h1>
 
-          <p className="text-lg text-warm-white/80 mb-8">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
+            <p className="text-lg text-warm-white/80 mb-8">
+              Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </p>
+          </MotionReveal>
 
           <div className="bg-surface-dark/80 backdrop-blur-md border border-white/10 glass-shadow-lg rounded-2xl shadow-lg p-8 md:p-12 space-y-8">
-            
+
             {/* Intro */}
-            <div className="prose prose-lg max-w-none">
+            <MotionReveal className="prose prose-lg max-w-none">
               <p className="text-lg leading-relaxed text-warm-white/90">
-                Hey there! This is a small, handmade business run by real people who care about your privacy. 
-                This privacy policy explains how we handle your information when you shop with us. We're keeping 
+                Hey there! This is a small, handmade business run by real people who care about your privacy.
+                This privacy policy explains how we handle your information when you shop with us. We're keeping
                 it straightforward and honest.
               </p>
-            </div>
+            </MotionReveal>
 
             {/* Our Promise */}
+            <MotionReveal delay={0.00}>
             <section className="bg-accent/10 border border-accent/20 rounded-xl p-6 border-l-4 border-accent">
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Our Promise to You
@@ -62,8 +66,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* What We Collect */}
+            <MotionReveal delay={0.05}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 What Information We Collect
@@ -85,8 +91,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* How We Use It */}
+            <MotionReveal delay={0.10}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 How We Use Your Information
@@ -109,8 +117,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Third Party Services */}
+            <MotionReveal delay={0.15}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Third-Party Services
@@ -153,8 +163,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Data Security */}
+            <MotionReveal delay={0.20}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 How We Protect Your Information
@@ -174,8 +186,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Your Rights */}
+            <MotionReveal delay={0.25}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Your Rights
@@ -195,8 +209,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Cookies */}
+            <MotionReveal delay={0.30}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Cookies & Tracking
@@ -218,8 +234,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Changes to Policy */}
+            <MotionReveal delay={0.35}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Changes to This Policy
@@ -232,8 +250,10 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Contact */}
+            <MotionReveal delay={0.40}>
             <section className="bg-gradient-to-br from-terracotta/5 to-sage/5 rounded-xl p-6">
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Questions or Concerns?
@@ -257,6 +277,7 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Bottom Note */}
             <div className="border-t pt-6 mt-8">

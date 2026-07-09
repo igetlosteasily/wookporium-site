@@ -14,6 +14,7 @@ import PortableText from '@/components/PortableText'
 import ProductCard from '@/components/ProductCard'
 import CountdownTimer from '@/components/CountdownTimer'
 import ParallaxSection from '@/components/ParallaxSection'
+import MotionReveal from '@/components/MotionReveal'
 
 interface CollectionPageProps {
   params: Promise<{ slug: string }>
@@ -108,7 +109,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         overlayOpacity={0.3}
         overlayColor="bg-black/40"
       >
-        <div className="text-center max-w-4xl mx-auto py-16">
+        <MotionReveal className="text-center max-w-4xl mx-auto py-16">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white drop-shadow-2xl mb-4">
             {collection.name}
           </h1>
@@ -122,7 +123,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               Official: {ogData.siteName}
             </p>
           )}
-        </div>
+        </MotionReveal>
       </ParallaxSection>
 
       {/* Main Content */}
@@ -131,6 +132,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
           {/* Main Column */}
           <div className="lg:col-span-2 space-y-12">
             {/* Marina's Note */}
+            <MotionReveal>
             <section>
               <div className="flex items-center gap-3 mb-6">
                 <div className="text-4xl">✨</div>
@@ -142,9 +144,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 <PortableText content={collection.curatorsNote} />
               </div>
             </section>
+            </MotionReveal>
 
             {/* Official Festival Description (if available) */}
             {ogData?.description && (
+              <MotionReveal>
               <section className="glass-light glass-shadow rounded-2xl p-6 md:p-8 border-l-4 border-sage">
                 <h3 className="text-xl font-semibold text-brown-warm mb-3 flex items-center gap-2">
                   <span>🎪</span>
@@ -167,10 +171,12 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                   </a>
                 )}
               </section>
+              </MotionReveal>
             )}
 
             {/* Marina's Picks */}
             {collection.marinasPicks && collection.marinasPicks.length > 0 && (
+              <MotionReveal>
               <section>
                 <div className="flex items-center gap-3 mb-6">
                   <div className="text-4xl">💚</div>
@@ -182,9 +188,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                   Marina's favorite pieces from this collection - perfect for the vibe!
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {collection.marinasPicks.map((product) => (
+                  {collection.marinasPicks.map((product, index) => (
+                    <MotionReveal key={product._id} delay={index * 0.1}>
                     <ProductCard
-                      key={product._id}
                       product={{
                         _id: product._id,
                         _updatedAt: new Date().toISOString(),
@@ -199,12 +205,15 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                       }}
                       priority={false}
                     />
+                    </MotionReveal>
                   ))}
                 </div>
               </section>
+              </MotionReveal>
             )}
 
             {/* All Products */}
+            <MotionReveal>
             <section>
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-brown-warm mb-6">
                 Complete Collection
@@ -215,11 +224,12 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               {products.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   {products.map((product, index) => (
+                    <MotionReveal key={product._id} delay={(index % 4) * 0.1}>
                     <ProductCard
-                      key={product._id}
                       product={product}
                       priority={index < 4}
                     />
+                    </MotionReveal>
                   ))}
                 </div>
               ) : (
@@ -233,9 +243,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 </div>
               )}
             </section>
+            </MotionReveal>
 
             {/* Customer Gallery (if reviews with photos exist) */}
             {allReviews.length > 0 && (
+              <MotionReveal>
               <section>
                 <h2 className="text-3xl md:text-4xl font-serif font-bold text-brown-warm mb-6">
                   Festival Fam Gallery
@@ -244,9 +256,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                   Real photos from real people rocking our pieces!
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {allReviews.slice(0, 6).map((review) => (
+                  {allReviews.slice(0, 6).map((review, index) => (
+                    <MotionReveal key={review._id} delay={(index % 6) * 0.08}>
                     <div
-                      key={review._id}
                       className="relative aspect-square rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
                     >
                       {review.customerPhoto?.asset?.url && review.customerPhoto.asset.url.trim() !== '' && (
@@ -264,14 +276,16 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                         </p>
                       </div>
                     </div>
+                    </MotionReveal>
                   ))}
                 </div>
               </section>
+              </MotionReveal>
             )}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
+          <MotionReveal className="space-y-8" delay={0.2}>
             {/* Countdown Timer */}
             {collection.eventStartDate && (
               <CountdownTimer
@@ -491,7 +505,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
                 )}
               </div>
             </div>
-          </div>
+          </MotionReveal>
         </div>
       </div>
     </main>

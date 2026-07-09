@@ -18,6 +18,7 @@ import { getProduct, getRelatedProducts, getProductReviews, client } from '@/lib
 import ProductCard from '@/components/ProductCard'
 import ProductGallery from '@/components/ProductGallery'
 import AddToCartButton from '@/components/AddToCartButton'
+import MotionReveal from '@/components/MotionReveal'
 
 interface ProductPageProps {
   params: Promise<{
@@ -135,12 +136,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="section-container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Image Gallery */}
-          <div>
+          <MotionReveal>
             <ProductGallery images={galleryImages} productTitle={product.title} />
-          </div>
+          </MotionReveal>
 
           {/* Right Column - Product Info */}
-          <div className="glass-light glass-shadow rounded-2xl p-6 md:p-8 space-y-6">
+          <MotionReveal delay={0.15} className="glass-light glass-shadow rounded-2xl p-6 md:p-8 space-y-6">
             {/* Category Badge */}
             <div className="flex items-center gap-3">
               <span className="px-4 py-1 bg-white/50 text-secondary uppercase text-sm font-semibold rounded-full border border-white/20">
@@ -259,7 +260,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <span className="text-sm">Made with Love</span>
               </div>
             </div>
-          </div>
+          </MotionReveal>
         </div>
       </section>
 
@@ -267,12 +268,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {reviews.length > 0 && (
         <section className="bg-cream py-16 px-4">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-header font-bold text-dark-brown mb-8 text-center">
-              Customer Reviews
-            </h2>
+            <MotionReveal>
+              <h2 className="text-3xl md:text-4xl font-header font-bold text-dark-brown mb-8 text-center">
+                Customer Reviews
+              </h2>
+            </MotionReveal>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {reviews.slice(0, 6).map((review) => (
-                <div key={review._id} className="bg-white p-6 rounded-lg shadow-md">
+              {reviews.slice(0, 6).map((review, index) => (
+                <MotionReveal key={review._id} delay={index * 0.1}>
+                <div className="bg-white p-6 rounded-lg shadow-md">
                   {/* Rating Stars */}
                   <div className="flex items-center gap-1 mb-3">
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -314,6 +318,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </div>
                   </div>
                 </div>
+                </MotionReveal>
               ))}
             </div>
           </div>
@@ -323,12 +328,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <section className="section-container">
-          <h2 className="text-3xl md:text-4xl font-header font-bold text-dark-brown mb-8 text-center">
-            You Might Also Like
-          </h2>
+          <MotionReveal>
+            <h2 className="text-3xl md:text-4xl font-header font-bold text-dark-brown mb-8 text-center">
+              You Might Also Like
+            </h2>
+          </MotionReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct._id} product={relatedProduct} />
+            {relatedProducts.map((relatedProduct, index) => (
+              <MotionReveal key={relatedProduct._id} delay={index * 0.1}>
+                <ProductCard product={relatedProduct} />
+              </MotionReveal>
             ))}
           </div>
         </section>

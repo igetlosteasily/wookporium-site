@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getFeaturedCollections } from '@/lib/sanity'
 import ParallaxSection from '@/components/ParallaxSection'
+import MotionReveal from '@/components/MotionReveal'
 
 export const metadata: Metadata = {
   title: 'Featured Collections',
@@ -25,23 +26,23 @@ export default async function CollectionsPage() {
         height="min-h-[40vh]"
         overlayOpacity={0.4}
       >
-        <div className="max-w-4xl mx-auto text-center">
+        <MotionReveal className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-4 drop-shadow-xl">
             Featured Collections
           </h1>
           <p className="text-xl text-white/95 drop-shadow-md">
             Curated collections for festivals, seasons, and special vibes ✨
           </p>
-        </div>
+        </MotionReveal>
       </ParallaxSection>
 
       {/* Collections Grid */}
       <section className="max-w-7xl mx-auto px-4 py-16">
         {collections.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {collections.map((collection) => (
+            {collections.map((collection, index) => (
+              <MotionReveal key={collection._id} delay={index * 0.1}>
               <Link
-                key={collection._id}
                 href={`/collections/${collection.slug.current}`}
                 className="group glass-light glass-shadow rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
               >
@@ -101,6 +102,7 @@ export default async function CollectionsPage() {
                   </div>
                 </div>
               </Link>
+              </MotionReveal>
             ))}
           </div>
         ) : (

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import MotionReveal from '@/components/MotionReveal'
 
 export const metadata: Metadata = {
     title: 'Shipping & Returns Policy',
@@ -12,17 +13,18 @@ export default function ShippingReturnsPage() {
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto">
 
-                    <div className="text-center mb-16">
+                    <MotionReveal className="text-center mb-16">
                         <h1 className="text-4xl md:text-5xl font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4 font-serif">
                             Shipping & Returns
                         </h1>
                         <p className="text-lg text-warm-white/80">
                             Getting your gear from our studio to your doorstep
                         </p>
-                    </div>
+                    </MotionReveal>
 
                     <div className="space-y-12">
                         {/* Shipping Policy */}
+                        <MotionReveal delay={0.00}>
                         <section className="glass-dark glass-shadow rounded-2xl p-8 md:p-12 border border-white/20">
                             <h2 className="text-2xl font-bold text-accent drop-shadow-[0_0_8px_rgba(176,38,255,0.4)] mb-6 flex items-center gap-3">
                                 <span className="text-3xl">📦</span> Shipping Policy
@@ -57,8 +59,10 @@ export default function ShippingReturnsPage() {
                                 </div>
                             </div>
                         </section>
+                        </MotionReveal>
 
                         {/* Returns Policy */}
+                        <MotionReveal delay={0.05}>
                         <section className="glass-dark glass-shadow rounded-2xl p-8 md:p-12 border border-white/20">
                             <h2 className="text-2xl font-bold text-accent drop-shadow-[0_0_8px_rgba(176,38,255,0.4)] mb-6 flex items-center gap-3">
                                 <span className="text-3xl">↺</span> Return & Exchange Policy
@@ -96,14 +100,15 @@ export default function ShippingReturnsPage() {
                                 </div>
                             </div>
                         </section>
+                        </MotionReveal>
 
                         {/* Help CTA */}
-                        <div className="text-center pt-8">
+                        <MotionReveal delay={0.1} className="text-center pt-8">
                             <p className="text-warm-white/80 mb-4">Have specific questions about your order?</p>
                             <Link href="/contact" className="text-primary font-bold hover:underline text-lg">
                                 Contact Support →
                             </Link>
-                        </div>
+                        </MotionReveal>
 
                     </div>
                 </div>

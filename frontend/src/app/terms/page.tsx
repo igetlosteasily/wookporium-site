@@ -5,6 +5,7 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import MotionReveal from '@/components/MotionReveal'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -23,18 +24,20 @@ export default function TermsPage() {
             ← Back to Home
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
-            Terms of Service
-          </h1>
+          <MotionReveal>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
+              Terms of Service
+            </h1>
 
-          <p className="text-lg text-warm-white/80 mb-8">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-          </p>
+            <p className="text-lg text-warm-white/80 mb-8">
+              Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            </p>
+          </MotionReveal>
 
           <div className="bg-surface-dark/80 backdrop-blur-md border border-white/10 glass-shadow-lg rounded-2xl shadow-lg p-8 md:p-12 space-y-8">
 
             {/* Intro */}
-            <div className="prose prose-lg max-w-none text-warm-white/90">
+            <MotionReveal className="prose prose-lg max-w-none text-warm-white/90">
               <p className="lead text-xl">
                 Welcome to Wookporium! By visiting our site and/or purchasing something from us, you engage in our "Service"
                 and agree to be bound by the following terms and conditions.
@@ -43,9 +46,10 @@ export default function TermsPage() {
                 These Terms of Service apply to all users of the site, including without limitation users who are browsers,
                 vendors, customers, merchants, and/or contributors of content.
               </p>
-            </div>
+            </MotionReveal>
 
             {/* General Conditions */}
+            <MotionReveal delay={0.00}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 1. General Conditions
@@ -62,8 +66,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Products & Services */}
+            <MotionReveal delay={0.05}>
             <section className="bg-accent/10 border border-accent/20 rounded-xl p-6 border-l-4 border-accent">
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 2. Handmade Products
@@ -83,8 +89,10 @@ export default function TermsPage() {
                 </ul>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Modifications */}
+            <MotionReveal delay={0.10}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 3. Modifications to the Service and Prices
@@ -100,8 +108,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Billing */}
+            <MotionReveal delay={0.15}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 4. Billing and Account Information
@@ -118,8 +128,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Returns & Refunds */}
+            <MotionReveal delay={0.20}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 5. Returns & Refunds
@@ -136,8 +148,10 @@ export default function TermsPage() {
                 </ul>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Third-Party Links */}
+            <MotionReveal delay={0.25}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 6. Third-Party Links
@@ -151,8 +165,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Personal Info */}
+            <MotionReveal delay={0.30}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 7. Personal Information
@@ -166,8 +182,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Governing Law */}
+            <MotionReveal delay={0.35}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 8. Governing Law
@@ -179,8 +197,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Changes to Terms */}
+            <MotionReveal delay={0.40}>
             <section>
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 9. Changes to Terms of Service
@@ -193,8 +213,10 @@ export default function TermsPage() {
                 </p>
               </div>
             </section>
+            </MotionReveal>
 
             {/* Contact Info */}
+            <MotionReveal delay={0.45}>
             <section className="bg-sage/5 rounded-xl p-6 mt-8">
               <h2 className="text-2xl font-serif font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.4)] mb-4">
                 Contact Information
@@ -210,6 +232,7 @@ export default function TermsPage() {
                 </div>
               </div>
             </section>
+            </MotionReveal>
 
           </div>
         </div>
