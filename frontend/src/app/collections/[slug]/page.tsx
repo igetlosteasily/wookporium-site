@@ -500,6 +500,9 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
 export async function generateStaticParams() {
   const collections = await client.fetch(`*[_type == "featuredCollection" && defined(slug.current)][] {"slug": slug.current}`)
+  if (!collections || collections.length === 0) {
+    return [{ slug: 'dummy-collection' }]
+  }
   return collections.map((col: any) => ({
     slug: col.slug,
   }))

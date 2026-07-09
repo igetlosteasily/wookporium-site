@@ -339,6 +339,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
 export async function generateStaticParams() {
   const products = await client.fetch(`*[_type == "product" && defined(slug.current)][] {"slug": slug.current}`)
+  if (!products || products.length === 0) {
+    return [{ slug: 'dummy-product' }]
+  }
   return products.map((prod: any) => ({
     slug: prod.slug,
   }))
