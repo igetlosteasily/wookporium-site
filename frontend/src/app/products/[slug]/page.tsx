@@ -14,7 +14,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getProduct, getRelatedProducts, getProductReviews } from '@/lib/sanity'
+import { getProduct, getRelatedProducts, getProductReviews, client } from '@/lib/sanity'
 import ProductCard from '@/components/ProductCard'
 import ProductGallery from '@/components/ProductGallery'
 import AddToCartButton from '@/components/AddToCartButton'
@@ -335,4 +335,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
       )}
     </main>
   )
+}
+
+export async function generateStaticParams() {
+  const products = await client.fetch(`*[_type == "product" && defined(slug.current)][] {"slug": slug.current}`)
+  return products.map((prod: any) => ({
+    slug: prod.slug,
+  }))
 }

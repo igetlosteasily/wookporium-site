@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { getFeaturedCollection, getProductsByFestivalTag, getProductReviews } from '@/lib/sanity'
+import { getFeaturedCollection, getProductsByFestivalTag, getProductReviews, client } from '@/lib/sanity'
 import { fetchOpenGraphData } from '@/lib/og-fetcher'
 import PortableText from '@/components/PortableText'
 import ProductCard from '@/components/ProductCard'
@@ -496,4 +496,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
       </div>
     </main>
   )
+}
+
+export async function generateStaticParams() {
+  const collections = await client.fetch(`*[_type == "featuredCollection" && defined(slug.current)][] {"slug": slug.current}`)
+  return collections.map((col: any) => ({
+    slug: col.slug,
+  }))
 }
