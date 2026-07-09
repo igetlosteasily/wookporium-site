@@ -26,48 +26,8 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Static export support (optional for Cloudflare Pages)
-  // output: 'export', // Uncomment when ready for static export
-
-  // PWA manifest
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=31536000; includeSubDomains; preload",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdn.snipcart.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.snipcart.com; img-src 'self' data: https://cdn.sanity.io https://cdn.snipcart.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.api.sanity.io https://app.snipcart.com wss://*.sanity.io;",
-          },
-        ],
-      },
-      {
-        source: "/manifest.json",
-        headers: [
-          {
-            key: "Content-Type",
-            value: "application/manifest+json",
-          },
-        ],
-      },
-    ];
-  },
+  // Static export support for Cloudflare Pages
+  output: 'export',
 };
 
 // PWA Configuration
