@@ -1,439 +1,283 @@
-import { getCompleteHomepageData } from '@/lib/sanity'
-import Link from 'next/link'
-import Image from 'next/image'
-import CartTrigger from '@/components/CartTrigger'
-import DynamicLogo from '@/components/DynamicLogo'
-import FontProvider from '@/components/FontProvider'
-import ThemeProvider from '@/components/ThemeProvider'
-import MobileNav from '@/components/MobileNav'
-import FeaturedProducts from '@/components/FeaturedProducts'
-import HeroCarousel from '@/components/HeroCarousel'
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { getHomepageData, getHeroSlides, getHomepageFeaturedCollection } from "@/lib/sanity";
+import PortableText from "@/components/PortableText";
+import HeroSlider from "@/components/HeroSlider";
+import FeaturedCollectionParallax from "@/components/FeaturedCollectionParallax";
+import MotionReveal from "@/components/MotionReveal";
+import ParallaxSection from "@/components/ParallaxSection";
 
-interface Product {
-  _id: string
-  title: string
-  slug: { current: string }
-  shortDescription: string
-  price: number
-  mainImageUrl: string
-  tags: string[]
-  festivalAttribution?: string
-}
-
-interface BrandSettings {
-  logoUrl?: string
-  logoText?: string
-  logoIcon?: string
-  primaryColor?: string
-  secondaryColor?: string
-  backgroundColor?: string
-  sectionBackgroundColor?: string
-  heroTitle?: string
-  heroSubtitle?: string
-  heroBackgroundImageUrl?: string
-  heroImages?: Array<{ url: string; alt?: string }>
-  themeStyle?: string
-  buttonStyle?: string
-  headerFont?: string
-  bodyFont?: string
-  fontWeightStyle?: string
-  featuredProducts?: Product[]
-}
-
-interface HomepageContent {
-  valuesSectionTitle?: string
-  values?: Array<{
-    emoji: string
-    title: string
-    description: string
-  }>
-  collectionsSectionTitle?: string
-  collections?: Array<{
-    emoji: string
-    title: string
-    description: string
-    linkUrl: string
-  }>
-  primaryButtonText?: string
-  primaryButtonUrl?: string
-  secondaryButtonText?: string
-  secondaryButtonUrl?: string
-  footerDescription?: string
-}
-
-interface CompleteHomepageData {
-  brandSettings: BrandSettings | null
-  homepageContent: HomepageContent | null
-  featuredProducts: Product[]
-  newArrivals: Product[]
-}
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default async function HomePage() {
-  // Get all homepage data from CMS
-  const data: CompleteHomepageData = await getCompleteHomepageData()
-  const { brandSettings, homepageContent, featuredProducts, newArrivals } = data
+  // Fetch all homepage data from Sanity
+  const [
+    { business, featuredProducts, featuredReviews },
+    heroSlides,
+    featuredCollection,
+  ] = await Promise.all([
+    getHomepageData(),
+    getHeroSlides(),
+    getHomepageFeaturedCollection(),
+  ]);
 
-  // Fallback values
-  const heroTitle = brandSettings?.heroTitle || 'Wookporium'
-  const heroSubtitle = brandSettings?.heroSubtitle || 'Handcrafted festival apparel, natural jewelry, and unique accessories for your journey'
-  const primaryButtonText = homepageContent?.primaryButtonText || 'Shop All Products ✨'
-  const primaryButtonUrl = homepageContent?.primaryButtonUrl || '/products/'
-  const secondaryButtonText = homepageContent?.secondaryButtonText || 'Handmade Jewelry'
-  const secondaryButtonUrl = homepageContent?.secondaryButtonUrl || '/collections/jewelry'
-
-  // Dynamic styling
-  const primaryColor = brandSettings?.primaryColor || '#111827'
-  const secondaryColor = brandSettings?.secondaryColor || '#6b7280'
-  const backgroundColor = brandSettings?.backgroundColor || '#ffffff'
-  const sectionBackgroundColor = brandSettings?.sectionBackgroundColor || '#f8fafc'
-
-  // Prepare hero images for carousel
-  const heroImages = brandSettings?.heroImages && brandSettings.heroImages.length > 0
-    ? brandSettings.heroImages.map(img => img.url)
-    : []
+  // Fallback values for legacy static hero (if no slides exist)
+  const heroTitle = business?.heroTitle || "Wookporium";
+  const heroSubtitle = business?.heroSubtitle || "Handcrafted festival apparel and natural jewelry for your journey";
+  const heroImageUrl = business?.heroImage?.asset?.url;
 
   return (
-    <ThemeProvider 
-      themeStyle={brandSettings?.themeStyle}
-      primaryColor={primaryColor}
-      secondaryColor={secondaryColor}
-      backgroundColor={backgroundColor}
-      sectionBackgroundColor={sectionBackgroundColor}
-    >
-      <FontProvider 
-        headerFont={brandSettings?.headerFont}
-        bodyFont={brandSettings?.bodyFont}
-        fontWeightStyle={brandSettings?.fontWeightStyle}
-      >
-        {/* FIXED: Remove inline backgroundColor styles, let theme system handle it */}
-        <div className="min-h-screen themed-page">
-          {/* Navigation Bar - THEME RESPONSIVE */}
-          <nav className="sticky top-0 z-50 border-b border-gray-200 shadow-sm themed-nav">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between h-16">
-                {/* Dynamic Logo */}
-                <DynamicLogo brandSettings={brandSettings} />
-
-                {/* Desktop Navigation Links */}
-                <div className="hidden md:flex items-center space-x-8">
-                  <Link href="/collections/tops" className="themed-nav-link">
-                    Tops
-                  </Link>
-                  <Link href="/collections/bottoms" className="themed-nav-link">
-                    Bottoms
-                  </Link>
-                  <Link href="/collections/outerwear" className="themed-nav-link">
-                    Outerwear
-                  </Link>
-                  <Link href="/collections/jewelry" className="themed-nav-link">
-                    Jewelry
-                  </Link>
-                  <Link href="/collections/apparel" className="themed-nav-link">
-                    Apparel
-                  </Link>
-                  <Link href="/collections/knick-knacks" className="themed-nav-link">
-                    Knick-knacks
-                  </Link>
-                  <Link href="/links" className="themed-nav-link">
-                    Links
-                  </Link>
-                  <Link href="/about" className="themed-nav-link">
-                    About Us
-                  </Link>
-                </div>
-
-                {/* Mobile + Desktop Cart/Menu */}
-                <div className="flex items-center gap-4">
-                  {/* Desktop Cart */}
-                  <CartTrigger 
-                    className="hidden md:block themed-button-primary"
-                    style={{ 
-                      backgroundColor: primaryColor,
-                      color: '#ffffff'
-                    }}
-                  />
-                  
-                  {/* Mobile Cart */}
-                  <CartTrigger 
-                    className="md:hidden themed-button-primary"
-                    style={{ 
-                      backgroundColor: primaryColor,
-                      color: '#ffffff'
-                    }}
-                  />
-                  
-                  {/* Mobile Navigation */}
-                  <MobileNav brandSettings={brandSettings} />
-                </div>
-              </div>
-            </div>
-          </nav>
-
-          {/* Hero Section with Carousel */}
-          <HeroCarousel
-            images={heroImages}
-            fallbackImage={brandSettings?.heroBackgroundImageUrl}
-            autoAdvance={true}
-            intervalMs={5000}
-            className="themed-hero"
-          >
-            <div className="container mx-auto text-center">
-              <h1 
-                className="text-6xl md:text-7xl mb-6 themed-heading text-white"
-                style={{ 
-                  fontFamily: 'var(--font-header)',
-                  fontWeight: 'var(--font-weight-bold)',
-                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
-                }}
-              >
+    <main className="min-h-screen">
+      {/* Hero Section - Slider or Static */}
+      {heroSlides.length > 0 ? (
+        <HeroSlider slides={heroSlides} />
+      ) : (
+        // Legacy static hero (fallback if no slides in CMS)
+        // NOW WITH PARALLAX!
+        // Legacy static hero (fallback if no slides in CMS)
+        <ParallaxSection
+          backgroundImage={heroImageUrl || '/images/backgrounds/concert-hero-lasers.jpg'}
+          height="min-h-[80vh]"
+          overlayOpacity={0.7}
+        >
+          {/* Hero Content */}
+          <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8 py-20">
+            <MotionReveal delay={0.2}>
+              <h1 className="text-6xl md:text-8xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-accent drop-shadow-[0_0_15px_rgba(0,240,255,0.4)]">
                 {heroTitle}
               </h1>
-              <p 
-                className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto leading-relaxed"
-                style={{ 
-                  fontFamily: 'var(--font-body)',
-                  fontWeight: 'var(--font-weight-normal)',
-                  textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
-                }}
-              >
+            </MotionReveal>
+            <MotionReveal delay={0.4}>
+              <p className="text-xl md:text-3xl text-warm-white drop-shadow-md max-w-3xl mx-auto leading-relaxed font-light">
                 {heroSubtitle}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link 
-                  href={primaryButtonUrl}
-                  className="text-white py-4 px-8 transition-all transform themed-button-primary"
-                  style={{ 
-                    backgroundColor: primaryColor,
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                    borderRadius: 'var(--theme-button-radius)',
-                    boxShadow: 'var(--theme-button-shadow)',
-                    transitionDuration: 'var(--theme-animation-speed)'
-                  }}
+            </MotionReveal>
+            <MotionReveal delay={0.6}>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8">
+                <Link
+                  href="/products"
+                  className="btn-primary text-lg"
                 >
-                  {primaryButtonText}
+                  Shop Collection 🌿
                 </Link>
-                <Link 
-                  href={secondaryButtonUrl}
-                  className="border-2 text-white hover:bg-white/10 py-4 px-8 transition-all themed-button-secondary"
-                  style={{ 
-                    borderColor: '#ffffff',
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 'var(--font-weight-semibold)',
-                    borderRadius: 'var(--theme-button-radius)',
-                    transitionDuration: 'var(--theme-animation-speed)'
-                  }}
+                <Link
+                  href="/about"
+                  className="glass-dark px-10 py-4 rounded-full font-bold text-warm-white hover:text-primary transition-all duration-200 text-lg shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]"
                 >
-                  {secondaryButtonText}
+                  Our Story
                 </Link>
               </div>
-            </div>
-          </HeroCarousel>
+            </MotionReveal>
+          </div>
+        </ParallaxSection>
+      )}
 
-          {/* Featured Products Section */}
-          {featuredProducts.length > 0 && (
-            <FeaturedProducts
-              products={featuredProducts}
-              title="Featured Products"
-              primaryColor={primaryColor}
-            />
-          )}
+      {/* Homepage Introduction Section (Rich Text from CMS) */}
+      {business?.homepageIntro && business.homepageIntro.length > 0 && (
+        <section className="section-container max-w-4xl mx-auto">
+          <PortableText
+            content={business.homepageIntro}
+            className="text-center"
+          />
+        </section>
+      )}
 
-          {/* New Arrivals Section - FIXED: Use themed class instead of inline background */}
-          {newArrivals.length > 0 && (
-            <section className="py-16 px-4 themed-section">
-              <div className="container mx-auto">
-                <div className="flex items-center justify-between mb-12">
-                  <h2 
-                    className="text-4xl themed-heading"
-                    style={{ 
-                      color: primaryColor,
-                      fontFamily: 'var(--font-header)',
-                      fontWeight: 'var(--font-weight-bold)'
-                    }}
+      {/* Featured Collection Spotlight with Parallax */}
+      {featuredCollection && (
+        <FeaturedCollectionParallax collection={featuredCollection} />
+      )}
+
+      {/* Featured Products Section */}
+      {featuredProducts.length > 0 && (
+        // FEATURED PRODUCTS - NOW WITH PARALLAX BACKGROUND
+        <ParallaxSection
+          backgroundImage="/images/backgrounds/concert-blue-atmosphere.png"
+          height="min-h-screen" // Taller for better scroll effect
+          overlayOpacity={0.7} // Darker overlay for text legibility against lasers
+        >
+          <div className="relative z-10 py-24">
+            <MotionReveal delay={0.2}>
+              <div className="text-center mb-16">
+                <h2 className="text-5xl md:text-6xl font-header text-primary mb-6 drop-shadow-[0_0_15px_rgba(0,240,255,0.6)] glass-dark inline-block px-8 py-2 rounded-full border border-primary/30">
+                  Featured Products
+                </h2>
+                <p className="text-xl text-warm-white max-w-2xl mx-auto font-medium glass-dark p-4 rounded-xl inline-block mt-4 border border-white/10">
+                  Handpicked favorites from our collection
+                </p>
+              </div>
+            </MotionReveal>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+              {featuredProducts.map((product, index) => (
+                <MotionReveal key={product._id} delay={index * 0.2}>
+                  <Link
+                    href={`/products/${product.slug.current}`}
+                    className="card group border-none shadow-[0_0_30px_rgba(0,0,0,0.8)] hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all duration-300 bg-surface-dark/90 backdrop-blur-md hover:-translate-y-2 border border-white/5"
                   >
-                    New Arrivals
-                  </h2>
-                  <Link 
-                    href="/products/" 
-                    className="themed-nav-link"
-                    style={{ 
-                      fontFamily: 'var(--font-body)',
-                      fontWeight: 'var(--font-weight-medium)'
-                    }}
-                  >
-                    View All →
-                  </Link>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {newArrivals.map((product) => (
-                    <div
-                      key={product._id}
-                      className="overflow-hidden transition-all themed-card"
-                    >
-                      {product.mainImageUrl && (
-                        <Link href={`/products/${product.slug.current}/`} className="aspect-square overflow-hidden block relative">
-                          <Image
-                            src={product.mainImageUrl}
-                            alt={product.title}
-                            fill
-                            className="object-cover transition-transform duration-500 hover:scale-110"
-                            sizes="(max-width: 768px) 50vw, 25vw"
-                          />
-                        </Link>
+                    {/* Product Image */}
+                    <div className="relative aspect-[4/5] overflow-hidden">
+                      {product.mainImageUrl && product.mainImageUrl.trim() !== '' ? (
+                        <Image
+                          src={product.mainImageUrl}
+                          alt={product.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-deep-bg font-bold text-sm">
+                          No Image
+                        </div>
                       )}
-                      
-                      <div className="p-4">
-                        <Link href={`/products/${product.slug.current}/`}>
-                          <h3 
-                            className="text-lg themed-text-primary mb-2 hover:opacity-80 transition-colors cursor-pointer line-clamp-2"
-                            style={{ 
-                              fontFamily: 'var(--font-body)',
-                              fontWeight: 'var(--font-weight-semibold)'
-                            }}
+                      {product.isOneOfAKind && (
+                        <div className="absolute top-4 right-4 bg-accent/90 backdrop-blur text-deep-bg px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(176,38,255,0.8)]">
+                          One of a Kind
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="p-6 text-left border-t border-white/10">
+                      <h3 className="text-2xl font-serif font-bold text-warm-white mb-2 group-hover:text-primary transition-colors drop-shadow-md">
+                        {product.title}
+                      </h3>
+                      <div className="flex items-center justify-between mt-4">
+                        <span className="text-xl font-bold text-primary drop-shadow-[0_0_8px_rgba(0,240,255,0.5)]">
+                          ${product.price}
+                        </span>
+                        <span className="text-xs font-bold text-secondary uppercase tracking-widest border border-secondary/50 px-2 py-1 rounded drop-shadow-[0_0_5px_rgba(255,0,170,0.5)]">
+                          {product.category}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </MotionReveal>
+              ))}
+            </div>
+
+            {/* View All Link */}
+            <div className="text-center mt-16">
+              <Link
+                href="/products"
+                className="btn-outline inline-block text-lg glass-dark"
+              >
+                View All Products →
+              </Link>
+            </div>
+          </div>
+        </ParallaxSection>
+      )}
+
+      {/* Reviews Section */}
+      {featuredReviews.length > 0 && (
+        <>
+          {/* SECTION BREAK / HEADER - Solid block to separate parallax images */}
+          <section className="bg-surface-dark py-20 px-4 relative z-20 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] border-t border-b border-primary/20">
+            <MotionReveal delay={0.2}>
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-5xl md:text-6xl font-header text-primary drop-shadow-[0_0_10px_rgba(0,240,255,0.4)] mb-6">
+                  What Festival Fam Say
+                </h2>
+                <p className="text-xl text-secondary drop-shadow-[0_0_8px_rgba(255,0,170,0.4)] max-w-2xl mx-auto font-bold tracking-wide">
+                  Real reviews from real people
+                </p>
+              </div>
+            </MotionReveal>
+          </section>
+
+          <section
+            className="relative py-24 px-4 parallax-bg"
+            style={{
+              backgroundImage: 'url(/images/backgrounds/festival-crowd-lights.png)',
+              backgroundAttachment: 'fixed',
+              backgroundPosition: 'center',
+              backgroundSize: 'cover'
+            }}
+          >
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-primary/10 backdrop-blur-sm" />
+
+            <div className="relative z-10 max-w-7xl mx-auto">
+              {/* Removed internal header */}
+
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {featuredReviews.map((review, index) => (
+                  <MotionReveal key={review._id} delay={index * 0.2}>
+                    <div
+                      className="bg-surface-dark/60 backdrop-blur-md rounded-2xl p-8 shadow-[0_0_20px_rgba(0,0,0,0.6)] border border-white/10 hover:border-accent/50 hover:shadow-[0_0_20px_rgba(176,38,255,0.3)] hover:transform hover:-translate-y-2 transition-all duration-300 h-full flex flex-col"
+                    >
+                      {/* Rating Stars */}
+                      <div className="flex items-center gap-1 mb-6">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <span
+                            key={i}
+                            className={i < review.rating ? 'text-accent text-lg drop-shadow-[0_0_5px_rgba(176,38,255,0.8)]' : 'text-gray-700 text-lg'}
                           >
-                            {product.title}
-                          </h3>
-                        </Link>
-                        <div className="flex items-center justify-between">
-                          <span 
-                            className="text-xl themed-text-primary"
-                            style={{ 
-                              color: primaryColor,
-                              fontFamily: 'var(--font-body)',
-                              fontWeight: 'var(--font-weight-bold)'
-                            }}
-                          >
-                            ${product.price}
+                            ⭐
                           </span>
-                          {product.festivalAttribution && (
-                            <span 
-                              className="text-xs themed-text-secondary px-2 py-1 themed-badge"
-                              style={{ 
-                                fontFamily: 'var(--font-body)',
-                                fontWeight: 'var(--font-weight-normal)',
-                                borderRadius: 'var(--theme-radius)'
-                              }}
-                            >
-                              {product.festivalAttribution}
-                            </span>
+                        ))}
+                      </div>
+
+                      {/* Review Text */}
+                      <p className="text-warm-white mb-6 leading-relaxed italic text-lg flex-grow">
+                        "{review.reviewText}"
+                      </p>
+
+                      {/* Customer Info */}
+                      <div className="flex items-center gap-4 mt-auto border-t border-white/10 pt-4">
+                        {review.customerPhotoUrl && review.customerPhotoUrl.trim() !== '' && (
+                          <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-primary shadow-[0_0_10px_rgba(0,240,255,0.5)]">
+                            <Image
+                              src={review.customerPhotoUrl}
+                              alt={review.customerName}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-bold text-warm-white text-lg drop-shadow-sm">
+                            {review.customerName}
+                          </p>
+                          {review.festivalContext && (
+                            <p className="text-sm text-primary font-bold">
+                              {review.festivalContext}
+                            </p>
                           )}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </MotionReveal>
+                ))}
               </div>
-            </section>
-          )}
+            </div>
+          </section>
+        </>
+      )}
 
-          {/* Values Section - FIXED: Use themed classes */}
-          {homepageContent?.values && homepageContent.values.length > 0 && (
-            <section className="py-16 px-4 themed-section-alt">
-              <div className="container mx-auto">
-                <h2 
-                  className="text-4xl text-center mb-12 themed-heading"
-                  style={{ 
-                    color: primaryColor,
-                    fontFamily: 'var(--font-header)',
-                    fontWeight: 'var(--font-weight-bold)'
-                  }}
-                >
-                  {homepageContent.valuesSectionTitle || 'Our Values'}
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {homepageContent.values.map((value, index) => (
-                    <div 
-                      key={index} 
-                      className="p-6 text-center transition-all themed-card"
-                    >
-                      <div className="text-4xl mb-4">{value.emoji}</div>
-                      <h3 
-                        className="text-xl mb-3 themed-heading"
-                        style={{ 
-                          color: primaryColor,
-                          fontFamily: 'var(--font-header)',
-                          fontWeight: 'var(--font-weight-bold)'
-                        }}
-                      >
-                        {value.title}
-                      </h3>
-                      <p 
-                        className="themed-text-secondary"
-                        style={{ 
-                          fontFamily: 'var(--font-body)',
-                          fontWeight: 'var(--font-weight-normal)'
-                        }}
-                      >
-                        {value.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Featured Collections - FIXED: Use themed classes */}
-          {homepageContent?.collections && homepageContent.collections.length > 0 && (
-            <section className="py-16 px-4 themed-section">
-              <div className="container mx-auto">
-                <h2 
-                  className="text-4xl text-center mb-12 themed-heading"
-                  style={{ 
-                    color: primaryColor,
-                    fontFamily: 'var(--font-header)',
-                    fontWeight: 'var(--font-weight-bold)'
-                  }}
-                >
-                  {homepageContent.collectionsSectionTitle || 'Featured Collections'}
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {homepageContent.collections.map((collection, index) => (
-                    <Link key={index} href={collection.linkUrl} className="group">
-                      <div className="p-8 text-center transition-all border themed-collection-card">
-                        <div className="text-4xl mb-4">{collection.emoji}</div>
-                        <h3 
-                          className="text-2xl mb-3 themed-heading"
-                          style={{ 
-                            color: primaryColor,
-                            fontFamily: 'var(--font-header)',
-                            fontWeight: 'var(--font-weight-bold)'
-                          }}
-                        >
-                          {collection.title}
-                        </h3>
-                        <p 
-                          className="themed-text-secondary mb-4"
-                          style={{ 
-                            fontFamily: 'var(--font-body)',
-                            fontWeight: 'var(--font-weight-normal)'
-                          }}
-                        >
-                          {collection.description}
-                        </p>
-                        <span 
-                          className="group-hover:opacity-80 transition-opacity themed-text-accent"
-                          style={{ 
-                            color: secondaryColor,
-                            fontFamily: 'var(--font-body)',
-                            fontWeight: 'var(--font-weight-medium)'
-                          }}
-                        >
-                          Shop Collection →
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-        </div>
-      </FontProvider>
-    </ThemeProvider>
-  )
+      {/* Empty State if No Content */}
+      {featuredProducts.length === 0 && featuredReviews.length === 0 && (
+        <section className="section-container text-center">
+          <div className="max-w-2xl mx-auto space-y-6">
+            <h2 className="text-4xl font-header text-primary">
+              Coming Soon ✨
+            </h2>
+            <p className="text-xl text-secondary">
+              We're building something magical. Check back soon!
+            </p>
+            <Link
+              href="/about"
+              className="btn-primary inline-block"
+            >
+              Learn Our Story
+            </Link>
+          </div>
+        </section>
+      )}
+    </main>
+  );
 }

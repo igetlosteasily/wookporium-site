@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wookporium Icon Generator</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F5EFE6;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #D97757;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+    }
+    
+    p {
+      color: #666;
+      margin-bottom: 2rem;
+    }
+    
+    .preview {
+      text-align: center;
+      margin: 2rem 0;
+      padding: 2rem;
+      background: #F5EFE6;
+      border-radius: 8px;
+    }
+    
+    .preview-icon {
+      background: #D97757;
+      width: 192px;
+      height: 192px;
+      margin: 0 auto;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 16px rgba(217, 119, 87, 0.3);
+    }
+    
+    .preview-icon svg {
+      width: 120px;
+      height: 120px;
+    }
+    
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    button {
+      background: #D97757;
+      color: white;
+      border: none;
+      padding: 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      background: #c66647;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .all-button {
+      grid-column: 1 / -1;
+      background: #8B9D83;
+      font-size: 1.1rem;
+      padding: 1.25rem;
+    }
+    
+    .all-button:hover {
+      background: #7a8c74;
+    }
+    
+    .instructions {
+      background: #fffbf5;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid #D97757;
+      margin-top: 2rem;
+    }
+    
+    .instructions h3 {
+      color: #D97757;
+      margin-bottom: 0.5rem;
+    }
+    
+    .instructions ol {
+      margin-left: 1.5rem;
+      line-height: 1.8;
+    }
+    
+    .status {
+      text-align: center;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #e8f5e9;
+      border-radius: 8px;
+      color: #2e7d32;
+      font-weight: 600;
+      display: none;
+    }
+    
+    .status.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Wookporium Icon Generator</h1>
+    <p>Generate all PWA icons with the "W" monogram design</p>
+    
+    <div class="preview">
+      <div class="preview-icon">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text 
+            x="50" 
+            y="50" 
+            font-family="Georgia, serif" 
+            font-size="70" 
+            font-weight="bold" 
+            fill="white" 
+            text-anchor="middle" 
+            dominant-baseline="central"
+          >W</text>
+        </svg>
+      </div>
+      <p style="margin-top: 1rem; color: #666;">Preview: 192x192 icon</p>
+    </div>
+    
+    <div class="buttons">
+      <button onclick="downloadIcon(72)">Download 72x72</button>
+      <button onclick="downloadIcon(96)">Download 96x96</button>
+      <button onclick="downloadIcon(128)">Download 128x128</button>
+      <button onclick="downloadIcon(144)">Download 144x144</button>
+      <button onclick="downloadIcon(152)">Download 152x152</button>
+      <button onclick="downloadIcon(192)">Download 192x192</button>
+      <button onclick="downloadIcon(384)">Download 384x384</button>
+      <button onclick="downloadIcon(512)">Download 512x512</button>
+      <button class="all-button" onclick="downloadAll()">📦 Download All Icons (ZIP not available - click each)</button>
+    </div>
+    
+    <div class="status" id="status"></div>
+    
+    <div class="instructions">
+      <h3>Instructions:</h3>
+      <ol>
+        <li>Click each button to download individual icon sizes</li>
+        <li>Save each file to: <code>frontend/public/icons/</code></li>
+        <li>Name them exactly: <code>icon-72x72.png</code>, <code>icon-96x96.png</code>, etc.</li>
+        <li>Refresh your site - PWA icons should now load!</li>
+        <li>Verify with Lighthouse audit (should score ~95 for PWA)</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    function createIcon(size) {
+      return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        
+        // Background with rounded corners (maskable safe area)
+        ctx.fillStyle = '#D97757';
+        const radius = size * 0.15; // 15% border radius for rounded look
+        ctx.beginPath();
+        ctx.roundRect(0, 0, size, size, radius);
+        ctx.fill();
+        
+        // "W" letter
+        ctx.fillStyle = 'white';
+        ctx.font = `bold ${size * 0.7}px Georgia, serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('W', size / 2, size / 2);
+        
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/png');
+      });
+    }
+    
+    async function downloadIcon(size) {
+      const blob = await createIcon(size);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `icon-${size}x${size}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      showStatus(`✓ Downloaded icon-${size}x${size}.png`);
+    }
+    
+    async function downloadAll() {
+      const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+      
+      showStatus('Generating all icons... Please wait and click each file to download.');
+      
+      for (const size of sizes) {
+        await downloadIcon(size);
+        await new Promise(resolve => setTimeout(resolve, 500)); // Delay between downloads
+      }
+      
+      showStatus('✓ All icons downloaded! Save them to frontend/public/icons/');
+    }
+    
+    function showStatus(message) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.classList.add('show');
+      setTimeout(() => {
+        status.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

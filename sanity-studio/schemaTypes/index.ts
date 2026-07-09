@@ -1,17 +1,8 @@
-import blockContent from './blockContent'
+import business from './business'
 import product from './product'
-import variant from './variant'
-import brandSettings from './brandSettings'
-import homepageContent from './homepageContent'
-import aboutPageContent from './aboutPageContent'
-import linksPageContent from './linksPageContent'
+import review from './review'
+import aboutPage from './aboutPage'
+import heroSlide from './heroSlide'
+import featuredCollection from './featuredCollection'
 
-export const schemaTypes = [
-  product,
-  variant,
-  blockContent,
-  brandSettings,
-  homepageContent,
-  aboutPageContent,
-  linksPageContent,
-]
+export const schemaTypes = [business, product, review, aboutPage, heroSlide, featuredCollection]

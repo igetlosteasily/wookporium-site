@@ -1,19 +1,22 @@
-import {defineConfig} from 'sanity'
-import {deskTool} from 'sanity/desk'
-import {visionTool} from '@sanity/vision'
-import {colorInput} from '@sanity/color-input'
-import {schemaTypes} from './schemaTypes'
+import { defineConfig } from 'sanity'
+import { structureTool } from 'sanity/structure'
+import { visionTool } from '@sanity/vision'
+import { colorInput } from '@sanity/color-input'
+import { schemaTypes } from './schemaTypes'
 
 export default defineConfig({
-  name: 'default',
-  title: 'Wookporium',
-  projectId: 'k3xyl4wr', // Your new project ID
-  dataset: 'production',
+  name: 'wookporium-studio',
+  title: 'Wookporium - Festival Fashion CMS',
+
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || '7iiji3rf',
+  dataset: process.env.SANITY_STUDIO_DATASET || 'production',
+
   plugins: [
-    deskTool(), 
+    structureTool(),
     visionTool(),
-    colorInput()
+    colorInput(),
   ],
+
   schema: {
     types: schemaTypes,
   },

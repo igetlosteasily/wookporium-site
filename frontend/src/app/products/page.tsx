@@ -1,190 +1,123 @@
-import { getProducts } from '@/lib/sanity'
-import CartButton from '@/components/CartButton'
-import CartTrigger from '@/components/CartTrigger'
-import MobileNav from '@/components/MobileNav'
-import Link from 'next/link'
-import Image from 'next/image'
+/**
+ * Products Page - Main product catalog with filtering
+ * 
+ * Server component that fetches all products and passes them to
+ * the client-side ProductGrid component for filtering.
+ */
 
-interface Product {
-  _id: string
-  title: string
-  slug: { current: string }
-  shortDescription: string
-  price: number
-  mainImageUrl: string
-  tags: string[]
-  festivalAttribution?: string
+import type { Metadata } from 'next'
+import { getProducts } from '@/lib/sanity'
+import ProductGrid from '@/components/ProductGrid'
+import Link from 'next/link'
+import ParallaxSection from '@/components/ParallaxSection'
+
+export const metadata: Metadata = {
+  title: 'Shop All Products',
+  description: 'Browse our full collection of handmade festival fashion, crochet apparel, and natural jewelry. Unique pieces crafted with love for the festival community.',
+  openGraph: {
+    title: 'Shop All Products | Wookporium',
+    description: 'Browse our full collection of handmade festival fashion and natural jewelry.',
+  },
 }
 
-export default async function ProductsPage() {
-  const products: Product[] = await getProducts()
+interface ProductsPageProps {
+  searchParams: Promise<{ category?: string }>
+}
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  // Fetch all available products from Sanity
+  const products = await getProducts()
+
+  // Await searchParams before accessing (Next.js 15 requirement)
+  const params = await searchParams
+  const initialCategory = params.category || 'all'
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation Bar with Mobile Support */}
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo/Brand */}
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">W</span>
-              </div>
-              <span className="text-gray-900 font-semibold text-lg">Wookporium</span>
-            </Link>
+    <main className="min-h-screen relative">
+      {/* Ambient Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-terracotta/10 via-sage/5 to-brown-warm/10" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('/images/noise.png')] opacity-[0.03]" />
+      </div>
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link href="/collections/tops" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Tops
-              </Link>
-              <Link href="/collections/bottoms" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Bottoms
-              </Link>
-              <Link href="/collections/outerwear" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Outerwear
-              </Link>
-              <Link href="/collections/jewelry" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Jewelry
-              </Link>
-              <Link href="/collections/apparel" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Apparel
-              </Link>
-              <Link href="/collections/knick-knacks" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Knick-knacks
-              </Link>
-              <Link href="/links" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                Links
-              </Link>
-              <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors font-medium">
-                About Us
-              </Link>
-            </div>
-
-            {/* Mobile + Desktop Cart/Menu */}
-            <div className="flex items-center gap-4">
-              {/* Desktop Cart */}
-              <CartTrigger className="hidden md:block bg-gray-900 hover:bg-gray-800 text-white" />
-              
-              {/* Mobile Cart */}
-              <CartTrigger className="md:hidden bg-gray-900 hover:bg-gray-800 text-white py-2 px-3" />
-              
-              {/* Mobile Navigation */}
-              <MobileNav brandSettings={null} />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <Link 
-            href="/" 
-            className="text-gray-600 hover:text-gray-900 transition-colors mb-4 inline-block font-medium"
-          >
-            ← Back to Home
-          </Link>
-          
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">
-            All Products
+      {/* Page Header */}
+      <ParallaxSection
+        backgroundImage="https://images.unsplash.com/photo-1544365558-35aa4afcf11f?q=80&w=2536&auto=format&fit=crop"
+        height="min-h-[40vh]"
+        overlayOpacity={0.4}
+      >
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-header font-bold text-white mb-4 drop-shadow-xl">
+            Shop All Products
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Discover our complete collection of handcrafted festival apparel, natural jewelry, and unique accessories
+          <p className="text-lg md:text-xl text-white/95 max-w-3xl mx-auto drop-shadow-md font-light">
+            Discover our full collection of handmade festival fashion and natural jewelry.
+            Each piece is crafted with love for your journey. ✨
           </p>
         </div>
+      </ParallaxSection>
 
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <div
-              key={product._id}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 border border-gray-100"
-            >
-              {/* Product Image */}
-              {product.mainImageUrl && (
-                <Link href={`/products/${product.slug.current}/`} className="aspect-square overflow-hidden block relative">
-                  <Image
-                    src={product.mainImageUrl}
-                    alt={product.title}
-                    fill
-                    className="object-cover hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                </Link>
-              )}
-
-              {/* Product Info */}
-              <div className="p-6">
-                <Link href={`/products/${product.slug.current}/`}>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2 hover:text-gray-700 transition-colors cursor-pointer">
-                        {product.title}
-                    </h3>
-                </Link>
-                
-                {product.shortDescription && (
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                    {product.shortDescription}
-                  </p>
-                )}
-
-                {/* Price */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl font-bold text-gray-900">
-                    ${product.price}
-                  </span>
-                  {product.festivalAttribution && (
-                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                      {product.festivalAttribution}
-                    </span>
-                  )}
-                </div>
-
-                {/* Tags */}
-                {product.tags && product.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {product.tags.slice(0, 3).map((tag, index) => (
-                      <span
-                        key={index}
-                        className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full border border-gray-200"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Working Add to Cart Button */}
-                <CartButton 
-                  product={product}
-                  selectedVariant={null}
-                  finalPrice={product.price}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md"
-                >
-                  Add to Cart - ${product.price}
-                </CartButton>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* No Products Message */}
-        {products.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-6">📦</div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">No Products Yet</h3>
-            <p className="text-xl text-gray-600 mb-8">
-              Products will appear here once they are added to your Sanity CMS.
+      {/* Product Grid Section */}
+      <section className="section-container relative z-10">
+        {products.length > 0 ? (
+          <ProductGrid products={products} initialCategory={initialCategory} />
+        ) : (
+          // Empty State - No Products Yet
+          <div className="text-center py-16">
+            <div className="text-6xl mb-6">🎨</div>
+            <h2 className="text-3xl font-header font-semibold text-dark-brown mb-4">
+              Coming Soon!
+            </h2>
+            <p className="text-xl text-secondary mb-8 max-w-2xl mx-auto">
+              We're crafting something magical. Our products will be available soon.
+              Check back or follow us on Instagram for updates!
             </p>
-            <Link 
-              href="/"
-              className="bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
-            >
-              Back to Home
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/" className="btn-primary">
+                Back to Home
+              </Link>
+              <Link href="/about" className="btn-outline">
+                Learn Our Story
+              </Link>
+              <a
+                href="https://instagram.com/wookporium"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+              >
+                Follow on Instagram
+              </a>
+            </div>
           </div>
         )}
-      </div>
-    </div>
+      </section>
+
+      {/* Call-to-Action Section */}
+      {products.length > 0 && (
+        <section className="bg-cream py-16 px-4 mt-16">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-header font-bold text-dark-brown mb-4">
+              Looking for something specific?
+            </h2>
+            <p className="text-lg text-secondary mb-8">
+              We love creating custom pieces! Reach out to discuss your vision.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a
+                href="https://instagram.com/wookporium"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                DM us on Instagram
+              </a>
+              <Link href="/about" className="btn-outline">
+                Learn About Our Process
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
   )
 }

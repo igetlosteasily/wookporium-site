@@ -1,136 +1,79 @@
-import React from 'react';
+'use client'
 
-interface Variant {
-  sku: string;
-  name: string;
-  size?: string;
-  color?: string;
-  material?: string;
-  style?: string;
-  priceAdjustment: number;
-  inventory: number;
-  isAvailable: boolean;
-  variantImage?: {
-    asset: {
-      url: string;
-    };
-  };
-}
+/**
+ * Cart Button Component
+ * Triggers Snipcart cart modal
+ */
 
-interface Product {
-  _id: string;
-  title: string;
-  price: number;
-  slug: {
-    current: string;
-  };
-  mainImage?: {
-    asset: {
-      url: string;
-    };
-  };
-  shortDescription?: string;
-  hasVariants?: boolean;
-  variants?: Variant[];
-}
+import { useEffect, useState, useCallback } from 'react'
 
 interface CartButtonProps {
-  product: Product;
-  selectedVariant?: Variant | null;
-  finalPrice: number;
-  className?: string;
-  children?: React.ReactNode;
-  disabled?: boolean;
+  className?: string
 }
 
-export default function CartButton({ 
-  product, 
-  selectedVariant, 
-  finalPrice, 
-  className = '', 
-  children, 
-  disabled = false 
-}: CartButtonProps) {
-  // Use consistent production URL for static export
-  const baseUrl = 'https://wookporium.com'; // Updated to new domain!
-  const productUrl = `${baseUrl}/products/${product.slug.current}/`;
-  
-  // Determine image URL (variant image takes priority)
-  const imageUrl = selectedVariant?.variantImage?.asset?.url || 
-                   product.mainImage?.asset?.url || 
-                   '';
+export default function CartButton({ className = '' }: CartButtonProps) {
+  const [itemCount, setItemCount] = useState<number>(0)
 
-  // Generate unique item ID for Snipcart
-  const itemId = selectedVariant 
-    ? `${product._id}-${selectedVariant.sku}` 
-    : product._id;
-
-  // Generate item name with variant info
-  const itemName = selectedVariant 
-    ? `${product.title} - ${selectedVariant.name}`
-    : product.title;
-
-  // Generate description with variant details
-  const itemDescription = selectedVariant
-    ? `${product.shortDescription || product.title} (${selectedVariant.name})`
-    : product.shortDescription || product.title;
-
-  // Build custom fields for variant tracking
-  const customFields = selectedVariant ? [
-    selectedVariant.size && `Size[${selectedVariant.size}]`,
-    selectedVariant.color && `Color[${selectedVariant.color}]`,
-    selectedVariant.material && `Material[${selectedVariant.material}]`,
-    selectedVariant.style && `Style[${selectedVariant.style}]`,
-    `SKU[${selectedVariant.sku}]`
-  ].filter(Boolean).join('|') : '';
-
-  // Check if button should be disabled
-  const isDisabled = disabled || 
-    (product.hasVariants && !selectedVariant) ||
-    (selectedVariant && (!selectedVariant.isAvailable || selectedVariant.inventory <= 0));
-
-  // Generate button text
-  const getButtonText = () => {
-    if (children) return children;
-    
-    if (product.hasVariants && !selectedVariant) {
-      return 'Select Options';
+  // Update cart count from Snipcart - wrapped in useCallback for performance
+  const updateCartCount = useCallback(() => {
+    if (typeof window !== 'undefined' && (window as any).Snipcart) {
+      const count = (window as any).Snipcart.store.getState().cart.items.count
+      setItemCount(count || 0)
     }
-    
-    if (selectedVariant && (!selectedVariant.isAvailable || selectedVariant.inventory <= 0)) {
-      return 'Out of Stock';
+  }, []) // setItemCount is stable from useState
+
+  // Listen for Snipcart events
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.addEventListener('snipcart.ready', updateCartCount)
+      document.addEventListener('snipcart.cart.updated', updateCartCount)
     }
-    
-    return `Add to Cart - $${finalPrice.toFixed(2)}`;
-  };
+
+    return () => {
+      if (typeof document !== 'undefined') {
+        document.removeEventListener('snipcart.ready', updateCartCount)
+        document.removeEventListener('snipcart.cart.updated', updateCartCount)
+      }
+    }
+  }, [updateCartCount])
+
+  const handleClick = () => {
+    if (typeof window !== 'undefined' && (window as any).Snipcart) {
+      ;(window as any).Snipcart.api.theme.cart.open()
+    }
+  }
 
   return (
     <button
-      className={`
-        snipcart-add-item font-semibold py-3 px-6 rounded-lg transition-all duration-300 
-        ${isDisabled 
-          ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-          : 'bg-gray-900 hover:bg-gray-800 text-white transform hover:scale-105 shadow-sm hover:shadow-md'
-        } 
-        ${className}
-      `}
-      disabled={!!isDisabled}
-      data-item-id={itemId}
-      data-item-price={finalPrice}
-      data-item-url={productUrl}
-      data-item-name={itemName}
-      data-item-image={imageUrl}
-      data-item-description={itemDescription}
-      data-item-categories="festival,handmade"
-      data-item-custom1-name="Variant Details"
-      data-item-custom1-value={customFields}
-      data-item-quantity="1"
-      data-item-stackable="false"
-      {...(selectedVariant && {
-        'data-item-max-quantity': selectedVariant.inventory
-      })}
+      onClick={handleClick}
+      className={`relative flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${className}`}
+      aria-label={`Shopping cart with ${itemCount} items`}
     >
-      {getButtonText()}
+      {/* Cart Icon */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-5 h-5"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+        />
+      </svg>
+
+      {/* Cart Text (Desktop Only) */}
+      <span className="hidden sm:inline font-semibold">Cart</span>
+
+      {/* Item Count Badge */}
+      {itemCount > 0 && (
+        <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+          {itemCount}
+        </span>
+      )}
     </button>
-  );
+  )
 }

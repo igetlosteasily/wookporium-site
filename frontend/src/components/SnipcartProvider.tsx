@@ -1,31 +1,42 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+/**
+ * Snipcart Provider - Client-side only e-commerce integration
+ * Loads Snipcart scripts and container only in the browser to avoid hydration issues
+ */
+
+import { useEffect } from 'react'
 
 export default function SnipcartProvider() {
-  const initialized = useRef(false)
+  const apiKey = process.env.NEXT_PUBLIC_SNIPCART_API_KEY
 
   useEffect(() => {
-    if (initialized.current) return
-    initialized.current = true
-
-    if (!document.getElementById('snipcart')) {
-      const snipcartDiv = document.createElement('div')
-      snipcartDiv.id = 'snipcart'
-      snipcartDiv.hidden = true
-      snipcartDiv.setAttribute('data-api-key', process.env.NEXT_PUBLIC_SNIPCART_API_KEY || '')
-      snipcartDiv.setAttribute('data-config-modal-style', 'side')
-      snipcartDiv.setAttribute('data-config-add-product-behavior', 'none')
-      document.body.appendChild(snipcartDiv)
+    // Ensure Snipcart script is loaded
+    if (typeof window !== 'undefined' && apiKey && apiKey !== 'your-snipcart-key-here') {
+      console.log('Snipcart initialized with API key')
     }
+  }, [apiKey])
 
-    if (!document.querySelector('script[src*="snipcart.js"]')) {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.snipcart.com/themes/v3.4.1/default/snipcart.js'
-      script.async = true
-      document.body.appendChild(script)
-    }
-  }, [])
+  // Don't render if no API key configured yet
+  if (!apiKey || apiKey === 'your-snipcart-key-here') {
+    return null
+  }
 
-  return null
+  return (
+    <>
+      {/* Snipcart Container */}
+      <div
+        id="snipcart"
+        data-api-key={apiKey}
+        data-config-modal-style="side"
+        hidden
+      />
+      
+      {/* Snipcart Script */}
+      <script
+        async
+        src="https://cdn.snipcart.com/themes/v3.4.1/default/snipcart.js"
+      />
+    </>
+  )
 }

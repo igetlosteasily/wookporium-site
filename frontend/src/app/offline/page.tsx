@@ -1,25 +1,64 @@
+/**
+ * Offline Page - PWA fallback when network is unavailable
+ * 
+ * Displays a friendly message when users lose connectivity at festivals.
+ * Part of the PWA offline-first strategy for reliable festival experiences.
+ */
+
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Offline - Wookporium',
+  description: 'You are currently offline. We\'ll be back when you reconnect!',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function OfflinePage() {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-center px-4">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 mb-4">
-            You&apos;re Offline
-          </h1>
-          <p className="text-xl text-purple-200 mb-6">
-            No worries! You can still browse the products you&apos;ve already seen.
-          </p>
-          <p className="text-purple-300 mb-8">
-            When you get signal back, everything will sync up perfectly.
-          </p>
-          <Link 
-            href="/products/" 
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300"
-          >
-            Browse Cached Products
-          </Link>
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center px-4">
+      <div className="text-center max-w-md">
+        {/* Offline Icon */}
+        <div className="text-8xl mb-6" role="img" aria-label="Offline indicator">
+          📡
         </div>
+        
+        {/* Main Heading */}
+        <h1 className="text-4xl font-header font-bold text-dark-brown mb-4">
+          You're Offline
+        </h1>
+        
+        {/* Description */}
+        <p className="text-lg text-secondary mb-6">
+          Don't worry! When you're back online, we'll be right here with all the festival fashion goodness you love.
+        </p>
+        
+        {/* Pro Tip Box */}
+        <div className="bg-cream p-6 rounded-lg mb-8">
+          <p className="text-sm text-secondary-dark mb-2">
+            💡 <strong>Pro tip:</strong> Pages you've recently visited are saved for offline viewing!
+          </p>
+          <p className="text-sm text-secondary-dark">
+            Try browsing your recently viewed products - they should still work.
+          </p>
+        </div>
+        
+        {/* Action Button */}
+        <Link
+          href="/"
+          className="btn-primary inline-block"
+        >
+          Try Reloading Homepage
+        </Link>
+        
+        {/* Additional Context */}
+        <p className="text-sm text-secondary mt-8">
+          Having issues? Your connection might be restored soon. Check your device's network settings.
+        </p>
       </div>
-    )
-  }
+    </div>
+  )
+}

@@ -1,0 +1,337 @@
+/* Font imports - MUST be first in CSS */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&family=Dancing+Script:wght@400;700&display=swap');
+
+/* Desert Dust Design System - Global Styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  /* Base styles with Desert Dust aesthetics */
+  :root {
+    --color-primary: #00F0FF;
+    --color-secondary: #FF00AA;
+    --color-accent: #B026FF;
+    --color-warm-white: #FDF8F3;
+    --color-dark-brown: #120B1A;
+    --color-cream: #2A1A3A;
+    --color-deep-bg: #0A0A0F;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-deep-bg text-warm-white font-body antialiased;
+    /* Neon Festival Mesh Gradient */
+    background-image:
+      radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(255, 0, 170, 0.15) 0%, transparent 45%),
+      radial-gradient(circle at 50% 80%, rgba(176, 38, 255, 0.15) 0%, transparent 45%);
+    background-color: var(--color-deep-bg);
+    background-attachment: fixed;
+  }
+
+  /* Typography defaults */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-header;
+  }
+}
+
+@layer components {
+
+  /* Reusable button styles with Neon glow */
+  .btn-primary {
+    @apply px-6 py-3 bg-primary/90 text-deep-bg font-bold rounded-full hover:bg-primary transition-all duration-300 shadow-[0_0_15px_rgba(0,240,255,0.5)] hover:shadow-[0_0_25px_rgba(0,240,255,0.8)] focus:outline-none active:scale-95 border border-primary/50;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-secondary/90 text-white font-bold rounded-full hover:bg-secondary transition-all duration-300 shadow-[0_0_15px_rgba(255,0,170,0.5)] hover:shadow-[0_0_25px_rgba(255,0,170,0.8)] focus:outline-none active:scale-95 border border-secondary/50;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-primary text-primary font-bold rounded-full hover:bg-primary hover:text-deep-bg transition-all duration-300 focus:outline-none hover:shadow-[0_0_20px_rgba(0,240,255,0.6)] active:scale-95;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-surface-dark/80 backdrop-blur-md rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-white/10 overflow-hidden transition-transform duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-[0_0_20px_rgba(0,240,255,0.2)];
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full px-4 py-2 border border-secondary/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
+  }
+
+  /* Section container */
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16;
+  }
+
+  /* Skeleton loading styles */
+  .skeleton {
+    @apply animate-pulse bg-cream rounded;
+  }
+}
+
+@layer utilities {
+
+  /* Text shadow for hero sections */
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Smooth hover scale */
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  /* Focus-visible styles for accessibility */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  /* ============================================================================
+     GLASSMORPHISM UTILITIES - Festival Aesthetic
+     ============================================================================ */
+
+  /* Glass Light - Frosted glass for light backgrounds */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Glass Dark - Frosted dark glass for overlays and navigation */
+  .glass-dark {
+    background: rgba(10, 10, 15, 0.6);
+    backdrop-filter: blur(16px) saturate(200%);
+    -webkit-backdrop-filter: blur(16px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Glass Primary - Tinted glass with primary color */
+  .glass-primary {
+    background: rgba(0, 240, 255, 0.08);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(0, 240, 255, 0.3);
+  }
+
+  /* Glass Accent - Tinted glass with accent color */
+  .glass-accent {
+    background: rgba(176, 38, 255, 0.08);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(176, 38, 255, 0.3);
+  }
+
+  /* Glass Cream -> Glass Deep for new theme */
+  .glass-cream {
+    background: rgba(22, 22, 29, 0.6);
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Glass Shadows - Soft, elevated shadows for depth */
+  .glass-shadow {
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  }
+
+  .glass-shadow-lg {
+    box-shadow: 0 12px 48px rgba(31, 38, 135, 0.2);
+  }
+
+  .glass-shadow-xl {
+    box-shadow: 0 20px 64px rgba(31, 38, 135, 0.25);
+  }
+
+  /* Glass Hover States - Enhanced glass effect on interaction */
+  .glass-hover {
+    @apply transition-all duration-300;
+  }
+
+  .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 12px 48px rgba(31, 38, 135, 0.2);
+  }
+
+  /* Glass with stronger blur for prominent elements */
+  .glass-blur-lg {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  /* Glass with subtle blur for background elements */
+  .glass-blur-sm {
+    backdrop-filter: blur(6px) saturate(150%);
+    -webkit-backdrop-filter: blur(6px) saturate(150%);
+  }
+
+  /* Fallback for browsers without backdrop-filter support */
+  @supports not (backdrop-filter: blur(10px)) {
+    .glass-light {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .glass-dark {
+      background: rgba(20, 20, 30, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .glass-primary {
+      background: rgba(217, 119, 87, 0.25);
+      border: 1px solid rgba(217, 119, 87, 0.4);
+    }
+
+    .glass-accent {
+      background: rgba(139, 157, 131, 0.25);
+      border: 1px solid rgba(139, 157, 131, 0.4);
+    }
+
+    .glass-cream {
+      background: rgba(245, 237, 228, 0.5);
+      border: 1px solid rgba(245, 237, 228, 0.5);
+    }
+  }
+}
+
+/* ============================================================================
+   PARALLAX GRADIENT BLOBS - Festival Atmosphere
+   ============================================================================ */
+
+/* Base gradient blob style */
+.gradient-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  /* Reduced from 80px - more visible */
+  opacity: 0.7;
+  /* Increased from 0.25 - MUCH more visible */
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+/* Sunset gradient - Pink to orange */
+.gradient-sunset {
+  background: radial-gradient(circle, #FF6B9D 0%, #FEC163 100%);
+  width: 50vw;
+  height: 50vw;
+}
+
+/* Ocean gradient - Cyan to purple */
+.gradient-ocean {
+  background: radial-gradient(circle, #00D4FF 0%, #7B2FF7 100%);
+  width: 60vw;
+  height: 60vw;
+}
+
+/* Forest gradient - Green to blue */
+.gradient-forest {
+  background: radial-gradient(circle, #0CFF60 0%, #0079FF 100%);
+  width: 55vw;
+  height: 55vw;
+}
+
+/* Electric gradient - Neon vibes */
+.gradient-electric {
+  background: radial-gradient(circle, #FF0080 0%, #7928CA 100%);
+  width: 45vw;
+  height: 45vw;
+}
+
+/* Prevent parallax sections from creating horizontal scroll */
+.parallax-section {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* CSS-only Parallax Utility (High Performance) */
+/* CSS-only Parallax Utility (Reference Implementation) */
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Parallax container for background elements */
+.parallax-bg-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Smooth scrolling for parallax effects */
+html.parallax-enabled {
+  scroll-behavior: smooth;
+}
+
+/* Mobile optimization - reduce blur on smaller screens */
+@media (max-width: 768px) {
+  .gradient-blob {
+    filter: blur(60px);
+    opacity: 0.2;
+  }
+}
+
+/* Loading spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  border: 3px solid var(--color-cream);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+/* ============================================================================
+   SNIPCART OVERRIDES - Neon Theme
+   ============================================================================ */
+#snipcart {
+  --color-default: var(--color-warm-white);
+  --color-alt: var(--color-primary);
+  --color-icon: var(--color-primary);
+  --color-success: var(--color-accent);
+  --color-error: #FF3333;
+  --color-link: var(--color-primary);
+  --color-buttonPrimary: var(--color-primary);
+  --color-buttonPrimaryHover: var(--color-secondary);
+  --color-buttonSecondary: var(--color-deep-bg);
+  --color-buttonSecondaryHover: var(--color-surface-dark);
+  
+  --bgColor-default: var(--color-surface-dark);
+  --bgColor-alt: var(--color-deep-bg);
+  --bgColor-info: rgba(0, 240, 255, 0.1);
+  
+  --borderColor-default: rgba(255, 255, 255, 0.1);
+  --borderColor-active: var(--color-primary);
+  
+  --boxShadow-default: 0 0 20px rgba(0, 0, 0, 0.8);
+  --boxShadow-focus: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.snipcart-modal__container {
+  backdrop-filter: blur(12px);
+  background-color: rgba(10, 10, 15, 0.85);
+}
