@@ -20,17 +20,9 @@ export const metadata: Metadata = {
   },
 }
 
-interface ProductsPageProps {
-  searchParams: Promise<{ category?: string }>
-}
-
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+export default async function ProductsPage() {
   // Fetch all available products from Sanity
   const products = await getProducts()
-
-  // Await searchParams before accessing (Next.js 15 requirement)
-  const params = await searchParams
-  const initialCategory = params.category || 'all'
 
   return (
     <main className="min-h-screen relative">
@@ -60,7 +52,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       {/* Product Grid Section */}
       <section className="section-container relative z-10">
         {products.length > 0 ? (
-          <ProductGrid products={products} initialCategory={initialCategory} />
+          <ProductGrid products={products} />
         ) : (
           // Empty State - No Products Yet
           <div className="text-center py-16">

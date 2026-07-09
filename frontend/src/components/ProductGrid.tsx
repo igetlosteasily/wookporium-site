@@ -7,7 +7,8 @@
 
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
 import MotionReveal from '@/components/MotionReveal'
 import type { ProductListItem } from '@/lib/types'
@@ -15,8 +16,6 @@ import type { ProductListItem } from '@/lib/types'
 interface ProductGridProps {
   /** All products to display and filter */
   products: ProductListItem[]
-  /** Initial category filter from URL */
-  initialCategory?: string
 }
 
 // Available product categories (must match Sanity schema)
@@ -31,13 +30,24 @@ const CATEGORIES = [
   { value: 'knick-knacks', label: 'Knick-knacks' },
 ]
 
-export default function ProductGrid({ products, initialCategory = 'all' }: ProductGridProps) {
+export default function ProductGrid({ products }: ProductGridProps) {
+  return (
+    <Suspense fallback={<div className="text-center py-8">Loading products...</div>}>
+      <ProductGridInner products={products} />
+    </Suspense>
+  )
+}
+
+function ProductGridInner({ products }: ProductGridProps) {
+  const searchParams = useSearchParams()
+  const initialCategory = searchParams.get('category') || 'all'
   const [activeCategory, setActiveCategory] = useState(initialCategory)
 
   // Update active category when URL changes (e.g., clicking navigation while on products page)
   useEffect(() => {
-    setActiveCategory(initialCategory)
-  }, [initialCategory])
+    const currentCategory = searchParams.get('category') || 'all'
+    setActiveCategory(currentCategory)
+  }, [searchParams])
 
   // Filter products by category
   const filteredProducts = useMemo(() => {
