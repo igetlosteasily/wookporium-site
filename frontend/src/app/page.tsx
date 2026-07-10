@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: "Home",
 };
 
+// ISR: re-fetch Sanity content in the background at most once per 60s.
+// A Studio publish shows up within this window — no rebuild required.
+export const revalidate = 60;
+
 export default async function HomePage() {
   // Fetch all homepage data from Sanity
   const [

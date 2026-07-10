@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import path from "path";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 const nextConfig: NextConfig = {
   // Pin the workspace root explicitly — the repo has a stray package-lock.json
@@ -29,9 +30,10 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
-
-  // Static export support for Cloudflare Pages
-  output: 'export',
 };
+
+// Enables Cloudflare bindings (R2 cache, DO queue) during local `next dev`.
+// No-op in production builds.
+initOpenNextCloudflareForDev();
 
 export default nextConfig;

@@ -10,6 +10,9 @@ import { getFeaturedCollections } from '@/lib/sanity'
 import ParallaxSection from '@/components/ParallaxSection'
 import MotionReveal from '@/components/MotionReveal'
 
+// ISR: refresh collections list from Sanity at most once per 60s.
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Featured Collections',
   description: 'Explore our curated festival and seasonal collections - handpicked pieces for your journey',

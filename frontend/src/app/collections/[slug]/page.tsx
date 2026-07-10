@@ -16,6 +16,10 @@ import CountdownTimer from '@/components/CountdownTimer'
 import ParallaxSection from '@/components/ParallaxSection'
 import MotionReveal from '@/components/MotionReveal'
 
+// ISR: known collection pages are pre-rendered via generateStaticParams and
+// refreshed at most once per 60s. New collections render on first request.
+export const revalidate = 60
+
 interface CollectionPageProps {
   params: Promise<{ slug: string }>
 }

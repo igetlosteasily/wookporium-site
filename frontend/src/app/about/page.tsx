@@ -14,6 +14,9 @@ import ParallaxSection from '@/components/ParallaxSection'
 import FounderSignature from '@/components/FounderSignature'
 import MotionReveal from '@/components/MotionReveal'
 
+// ISR: refresh About content from Sanity at most once per 60s.
+export const revalidate = 60
+
 /**
  * Generate SEO metadata
  */

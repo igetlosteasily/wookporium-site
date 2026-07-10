@@ -20,6 +20,11 @@ import ProductGallery from '@/components/ProductGallery'
 import AddToCartButton from '@/components/AddToCartButton'
 import MotionReveal from '@/components/MotionReveal'
 
+// ISR: known product pages are pre-rendered via generateStaticParams and
+// refreshed at most once per 60s. New products (not in the static list) render
+// on first request thanks to Next's default dynamicParams — also no rebuild.
+export const revalidate = 60
+
 interface ProductPageProps {
   params: Promise<{
     slug: string
